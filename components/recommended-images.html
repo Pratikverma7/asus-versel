@@ -1,0 +1,21 @@
+<div class="container recommended-images-container d-none" id="recommended-images-container">    
+</div>
+<script>
+    fetch(`${baseUrl}/component/recommendation_promotional_banners`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+            let container = document.getElementById('recommended-images-container');
+            if(data.data.length > 0)
+            {
+                container.classList.remove('d-none');
+                data.data.forEach((image, index) => {                    
+                    container.insertAdjacentHTML('beforeend',`<img src="${image}" alt="recommended-image" />`);
+                });
+            }          
+        });
+</script>

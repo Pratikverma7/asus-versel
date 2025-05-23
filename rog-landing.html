@@ -1,0 +1,485 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>ROG Landing Page</title>
+     <base href="https://asus.3mindsdigital.com"> 
+    <!--<base href="http://127.0.0.1:5500/">-->
+
+    <link rel="stylesheet" href="css/fonts/myriad-pro/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/rog-landing.css">
+    <link rel="stylesheet" href="css/rog-landing-2.css">
+    <link rel="stylesheet" href="css/fonts/rog-font/stylesheet.css">
+    <link rel="stylesheet" href="css/fonts/trade-gothic/style.css">
+    <link rel="stylesheet" href="css/fonts/robotto-condensed/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+</head>
+
+<body id="main-body" style="overflow-x:hidden !important;width:100%;" class="rog">
+    <div id="header"></div>
+    <div id="rog-header-top-component"></div>
+    <div id="rog-homepage-banners-component"></div>
+    <div class="container pt-40" id="top-deals-1">
+        <div class="as-title">Top Deals For You</div>
+        <div id="top-deals-products-tabs">
+
+        </div>
+        <div class="product-cards-container" id="specs-product-cards-container">
+
+        </div>
+        <div class="view-all-container mt-25 mb-40">
+            <button class="view-all" onclick="handleRoute('/rog-listing.html?topDeals')">View All</button>
+        </div>
+    </div>
+    <div id="rog-thoughtful-component"></div>
+    <div class="container pt-40" id="shop-deals-container">
+        <div class="as-title">Shop By Budget</div>
+        <div class="d-flex pt-40 pb-40" id="shop-by-budget-tabs">
+
+        </div>
+        <div class="product-cards-container" id="offer-product-cards-container">
+
+        </div>
+        <div class="view-all-container mt-25 mb-40">
+            <button class="view-all" onclick="handleBudgetRoute(true)">View All</button>
+        </div>
+    </div>
+    <div id="rog-bank-offer-component"></div>
+    <div id="shop-by-category" class="container pt-40" style="background: #0A0909;">
+        <div class="as-title">Shop by Category</div>
+        <div id="category-cards-container" class="product-cards-container pt-40">
+            <div class="dropdown w-100" id="category-dropdown">
+                <div class="select">
+                    <span class="selected" id="selected-category">Everday Laptops</span>
+                    <div class="caret"></div>
+                </div>
+                <ul class="menu" id="category-menu">
+                </ul>
+            </div>
+            <div id="category-container" class="category-container">
+
+            </div>
+        </div>
+        <div class="view-all-container mt-25 mb-40">
+            <button class="view-all" style="background-color: inherit;"  onclick="handleCategoryRoute()">View All</button>
+        </div>
+    </div>
+    <div id="rog-hot-deal-component"></div>
+    <div id="rog-grid-images-component"></div>
+    <div id="rog-trending-laptops-component" class="pt-40"></div>    
+    <div id="exclusive-component"></div>
+    <div id="faq-component"></div>
+    <div id="elevate-component"></div>
+    <div id="footer"></div>
+    <div id="compare-model-component"></div>
+</body>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js
+"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
+<script defer type="text/javascript" src="https://asus.oriserve.com/chatbot/static/js/asusprod.js"></script>
+<script src="js/common.js"></script>
+<script src="js/rog-header.js"></script>
+
+
+
+<script>
+// Load Components
+const components = [
+        {
+            id: 'header',
+            file: 'layout/rog-header.html',
+        },
+        {
+            id: 'rog-header-top-component',
+            file: 'components/rog-header-top.html',
+        },
+        {
+            id: 'rog-homepage-banners-component',
+            file: 'components/rog-homepage-banners.html',
+        },
+        { 
+            id: 'rog-hot-deal-component',
+            file: 'components/rog-hot-deal.html'
+        },
+        {
+            id: 'rog-grid-images-component',
+            file: 'components/rog-grid-images.html',
+        },   
+        { 
+            id: 'rog-trending-laptops-component',
+            file: 'components/rog-trending-laptops.html'
+        },
+        { 
+            id: 'rog-thoughtful-component',
+            file: 'components/rog-thoughtful.html'
+        },     
+        { 
+            id: 'rog-bank-offer-component',
+            file: 'components/rog-bank-offer.html'
+        },
+        { 
+            id: 'exclusive-component',
+            file: 'components/rog-exclusive.html'
+        },
+        { 
+            id: 'elevate-component',
+            file: 'components/rog-elevate.html'
+        },
+        { 
+            id: 'faq-component',
+            file: 'components/faq.html'
+        },
+        {
+            id: 'footer',
+            file: 'layout/rog-footer.html'
+        },
+        {
+            id: 'compare-model-component',
+            file: 'components/compare-model.html'
+        }
+    ];
+
+    components.forEach(component => {
+        fetch(component.file).then(response => response.text())
+        .then(data => {
+            const componentElement = document.getElementById(component.id);
+            componentElement.innerHTML = data;
+
+            const scripts = componentElement.getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                eval(scripts[i].innerText);
+            }
+        });
+    });
+
+// swiper code
+function callSwiperCode() {
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1, // Show one slide at a time
+        spaceBetween: 0, // No space between slides
+        loop: true, // Enable loop mode
+        autoplay: {
+            delay: 3000, // Autoplay delay in milliseconds
+            disableOnInteraction: false, // Keep autoplay running even when user interacts with the slider
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+}
+
+// fetching all the series
+fetch(`${baseUrl}/series/top-deals?is_rog=1`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let topDealsProducts = [];
+            data.data.forEach(tab => {
+                topDealsProducts.push({ id: tab.id, name: tab.name });
+            })
+            let tabsContainer = document.getElementById('top-deals-products-tabs');
+            topDealsProducts.forEach((tab, index) => {
+
+                let div = document.createElement("div");
+                // Add a class to the div
+                div.classList.add("tab-class");
+                // Set the text content of the div to the product name
+                div.textContent = tab.name;
+                div.onclick = function () {
+                    // Call the handleClick function when the div is clicked
+                    handleTabClick(div, tab.id);
+                };
+                // Append the div to the container
+                tabsContainer.appendChild(div);
+
+                // Call First Tab
+                if (index == 0) {
+                    handleTabClick(div, tab.id);
+                }
+            });
+
+            tabsContainer.children[0].classList.add('active-tab');
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+
+
+// Top deals
+const handleBudgetTabClick = (tab, id) => {
+    tab.classList.add('active-tab');
+    let budgetTabsWrapper = document.querySelectorAll('#shop-by-budget-tabs .tab-class');
+    budgetTabsWrapper.forEach((product, index) => {
+        if (product.id !== tab.id) {
+            product.classList.remove('active-tab');
+        }
+    });
+    if (tab.id === 'under-40') {
+        priceRange = 'less_than_40000'
+    }
+    if (tab.id === 'above-40') {
+        priceRange = '40000_to_60000'
+    }
+    if (tab.id === 'above-60') {
+        priceRange = '60000_to_80000'
+    }
+    if (tab.id === 'above-80') {
+        priceRange = 'greater_than_80000'
+    }
+
+    fetch(`${baseUrl}/products?is_rog=1&limit=4&price_range=${priceRange}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let cardsContainer = document.getElementById('offer-product-cards-container');
+            cardsContainer.innerHTML = '';
+            data.data.forEach((product) => {
+                if (screenWidth > 820) {
+                    desktopProductCard(product, cardsContainer, true, false, true)
+                } else {
+                    mobileProductCard(product, cardsContainer, true, false, true)
+                }
+            })
+            callSwiperCode();
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+let shopByBudget = ['Under ₹40k', '₹40k - ₹60k', '₹60k - ₹80k', '> ₹80k'];
+let budgetTabContainer = document.getElementById('shop-by-budget-tabs');
+shopByBudget.forEach((tab, index) => {
+    let div = document.createElement("div");
+    // Add a class to the div
+    div.classList.add("tab-class");
+    // Set the text content of the div to the product name
+    div.textContent = tab;
+    if (index === 0) {
+        div.id = 'under-40';
+    }
+    if (index === 1) {
+        div.id = 'above-40';
+    }
+    if (index === 2) {
+        div.id = 'above-60';
+    }
+    if (index === 3) {
+        div.id = 'above-80';
+    }
+
+    div.onclick = function () {
+        // Call the handleClick function when the div is clicked
+        handleBudgetTabClick(div, tab.id);
+    };
+    // Append the div to the container
+    budgetTabContainer.appendChild(div);
+    
+    // Call First Tab
+    if (index == 0) {
+        handleBudgetTabClick(div, tab.id);
+    }
+});
+
+budgetTabContainer.children[0].classList.add('active-tab');
+
+const handleTabClick = (tab, id) => {
+    tab.classList.add('active-tab');
+    let tabsWrapper = document.querySelectorAll('#top-deals-products-tabs .tab-class');
+    tabsWrapper.forEach((product, index) => {
+        if (product.innerHTML !== tab.innerHTML) {
+            product.classList.remove('active-tab');
+        }
+    });
+
+    fetch(`${baseUrl}/series/${id}/products?is_rog=1&limit=4`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let container = document.getElementById("specs-product-cards-container");
+            container.innerHTML = '';
+            data.data.forEach(product => {
+                if (screenWidth > 820) {
+                    desktopProductCard(product, container, false, true);
+                } else {
+                    mobileProductCard(product, container, false, true);
+                }
+            });
+
+            callSwiperCode();
+
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+
+}
+
+let selectedCategory;
+const dropdown = document.querySelector(".dropdown");
+const select = dropdown.querySelector(".select");
+const caret = dropdown.querySelector(".caret");
+const menu = dropdown.querySelector(".menu");
+const options = dropdown.querySelectorAll(".menu li");
+const selected = dropdown.querySelector(".selected");
+var selectedCategoryName = document.getElementById('selected-category');
+
+function handleCategory(id) {
+    selectedCategory = id;
+    
+    let selectedElement = document.getElementById('sbc-'+selectedCategory);
+    selectedCategoryName.innerHTML = selectedElement.dataset.name;
+
+    let tabsWrapper = document.querySelectorAll('.list-tab');
+    tabsWrapper.forEach((tab) => {
+        if ('sbc-'+selectedCategory === tab.id) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+
+    let cardsContainer = document.getElementById('category-cards-container');
+    let productCardsContainer = cardsContainer.querySelectorAll('.product-card');
+    if (productCardsContainer.length) {
+        productCardsContainer.forEach(card => {
+            card.remove();
+        })
+    }
+
+
+    fetch(`${baseUrl}/category/${id}/products?is_rog=1&limit=3`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.data.forEach((product) => {
+                if (screenWidth > 820) {
+                    desktopProductCard(product, cardsContainer, true)
+                } else {
+                    mobileProductCard(product, cardsContainer, true)
+                }
+            })
+            callSwiperCode();
+
+        });
+    menu.classList.remove("menu-open");
+}
+
+
+let banners = document.querySelectorAll('#homepage-banner');
+
+// Create a new Resize Observer
+const resizeObserver = new ResizeObserver(entries => {
+    handleViewportResize(entries);
+});
+
+// Observe the image element
+resizeObserver.observe(document.getElementById('main-body'));
+
+callSwiperCode();
+ 
+select.addEventListener("click", () => {
+    select.classList.toggle("select-clicked");
+    caret.classList.toggle("caret-rotate");
+    menu.classList.toggle("menu-open")
+})
+options.forEach(option => {
+    option.addEventListener("click", () => {
+        selected.innerText = option.innerText;
+        select.classList.remove("select-clicked");
+        caret.classList.remove("caret-rotate");
+        menu.classList.remove("menu-open");
+        options.forEach(option => {
+            option.classList.remove("active")
+        })
+        option.classList.add("active")
+    })
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetch(`${baseUrl}/categories?is_rog=1`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const categoriesList = document.getElementById('category-container');
+        const mobileCategoriesList = document.getElementById('category-menu');
+        data.data.forEach((category,index) => {
+            if(index === 0){
+                selectedCategory = category.id;
+                selectedCategoryName.innerHTML = category.name;
+            }
+            categoriesList.insertAdjacentHTML('beforeend',`<div class="list-tab ${index === 0 ? 'active' : ''}" id="sbc-${category.id}" data-name="${category.name}" onclick="handleCategory(${category.id})">
+                    ${category.category_icon ? `<span><img src=${category.category_icon}alt="everyday-laptop"></span>` : ''}
+                    <span>${category.name}</span>
+                </div>`);
+            mobileCategoriesList.insertAdjacentHTML('beforeend',`<option class="list-tab ${index === 0 ? 'active' : ''}" id="sbc-${category.id}" data-name="${category.name}" onclick="handleCategory(${category.id})">
+                <span>${category.name}</span>
+            </option>`);
+        });
+
+        let cardsContainer = document.getElementById('category-cards-container');
+
+        fetch(`${baseUrl}/category/${selectedCategory}/products?is_rog=1&limit=3`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                data.data.forEach((product) => {
+                    if (screenWidth > 820) {
+                        desktopProductCard(product, cardsContainer, true);
+                    } else {
+                        mobileProductCard(product, cardsContainer, true);
+                    }
+                })
+                callSwiperCode();
+            });
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+});
+
+function handleCategoryRoute() {
+    window.location.href = `/rog-listing.html?category=${selectedCategory}`;
+}
+</script>
+
+</html>

@@ -1,0 +1,78 @@
+<div id="homepage-slider" class="d-none">
+    <div class="glide">
+        <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides" id="glide__slides">
+            </ul>
+        </div>
+        <div class="glide__bullets" data-glide-el="controls[nav]">
+            <button class="glide__bullet" data-glide-dir="=0"></button>
+            <button class="glide__bullet" data-glide-dir="=1"></button>
+            <button class="glide__bullet" data-glide-dir="=2"></button>
+        </div>
+        <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" title="Previous" data-glide-dir="<"><img
+                    src="assets/images/chevron-left.svg" alt="prev"></button>
+            <button class="glide__arrow glide__arrow--right" title="Next" data-glide-dir=">"><img
+                    src="assets/images/chevron-right.svg" alt="next"></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function callGliderCode() {
+        const glide = new Glide(".glide", {
+            type: "carousel",
+            autoplay: 5000,
+            hoverpause: false,
+            gap: 0
+        });
+
+        glide.mount();
+    }
+
+    fetch(`${baseUrl}/banners?banner_type=recommendation_banners`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+            let bannerContainer = document.getElementById('homepage-slider');
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let sliderImages = document.getElementById('glide__slides');
+                data.data.forEach((banner, index) => {  
+                    sliderImages.insertAdjacentHTML('beforeend', `<li class="glide__slide">
+                            <img id="homepage-banner" src="${screenWidth > 820 ? banner.image_url : banner.mobile_image_url}" class="w-100" />
+                            <div class="leftside-container">
+                                <p class="text" style="${banner.text_color ? `color: ${banner.text_color};` : ``}">${banner.text}</p>
+                                <p class="text-bold" style="${banner.text_color ? `color: ${banner.text_color};` : ``}">${banner.bold_text}</p>
+                                ${banner.cpu_core_url.length > 0 ? `
+                                    <div class="cpu-processor-container">
+                                        ${banner.cpu_core_url.map(cpu => `
+                                            <div class="cpu-processor-item">
+                                                <img class="image" src="${cpu.image}" />
+                                                <p class="text">${cpu.text}</p>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                ` : ''}
+                                ${ banner.cta_text ? `<a class="btn text-cta" href="${banner.redirect_url}">${banner.cta_text}</a>` : ``}
+                            </div>
+                            ${banner.discount_url != null ? `<div class="bank-discount-container">
+                                <img class="image" src="${banner.discount_url.image}" />
+                                <div class="text-container">
+                                    <p class="text-bold">${banner.discount_url.bold_text}</p>
+                                    <p class="text">${banner.discount_url.text}</p>
+                                </div>
+                            </div>` : ''}
+                        </li>
+                    `);
+                });
+                
+                callGliderCode();
+            }          
+        });
+</script>

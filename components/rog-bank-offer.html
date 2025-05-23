@@ -1,0 +1,40 @@
+<div id="swiping-banner-container" class="container d-none">
+    <div class="swiper-container">
+        <div class="swiper-wrapper" id="offer-banner-slides">
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"><i class="fas fa-chevron-left"></i></div>
+        <div class="swiper-button-next"><i class="fas fa-chevron-right"></i></div>
+    </div>
+</div>
+<script>
+    fetch(`${baseUrl}/banners?banner_type=rog_bank_offers_banners`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+            let bannerContainer = document.getElementById('swiping-banner-container');
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let bankOffers = document.getElementById('offer-banner-slides');
+                data.data.forEach((banner, index) => {                    
+                    if (screenWidth > 820) {
+                        bankOffers.insertAdjacentHTML('beforeend',`<div class="swiper-slide">
+                            <img id="bank-offer-banner" src="${banner.image_url}" alt="product"
+                            class="w-100">
+                        </div>`);
+                    } else {
+                        bankOffers.insertAdjacentHTML('beforeend',`<div class="swiper-slide">
+                            <img id="bank-offer-banner" src="${banner.mobile_image_url}" alt="product"
+                            class="w-100">
+                        </div>`);
+                    }
+                });
+            }          
+        });
+</script>

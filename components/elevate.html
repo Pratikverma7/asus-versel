@@ -1,0 +1,119 @@
+<div class="elevate-banner-container d-none" id="elevate-banner-container">
+    <div class="elevate-banner-left-side-container">
+        <p id="elevate-text" style="position: relative;z-index: 99"></p>
+        <a class="btn" id="elevate-cta-text" style="position: relative;z-index: 99"></a>
+    </div>
+        <div class="hotspot-container">
+            <div class="hotspot1 hotspot hotspot-hover-point"  id="hotspot1">
+                <div class="ripple-1"></div>
+                <div class="ripple-2"></div>
+                <div class="ripple-3"></div>
+
+                <div class="popup hotspot1-popup" id="hotspot1-popup" style="top: 18px; left: 127px;">
+                    <img src="assets/images/product-image.png"/>
+                    <div class="product-title" id="product-title" style="text-align: center;
+                    white-space: break-spaces;
+                   ">ASUS Vivobook Pro 15 OLED M6500QFB</div>
+                    <div class="product-description" id="product-description" style="text-align: center;
+                    white-space: break-spaces;">Product Description lorem ipsumr the ongoing.</div></div>
+            </div>
+    
+
+      
+    <img id="elevate-banner" src="" alt="laptop-banner" class="w-100">
+
+
+
+</div>
+<script>
+    const screenWidth = window.innerWidth;
+    const imgSrc = screenWidth > 820 ? "assets/images/elevateBanner.png" : "assets/images/elevateBannerSmall.png";
+    document.getElementById("elevate-banner").src = imgSrc;
+    fetch(`${baseUrl}/banners?banner_type=elevate_banner`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+
+    let bannerContainer = document.getElementById('elevate-banner-container');
+    let hotspotContainer = document.querySelector('.hotspot-container'); // Ensure correct class selection
+
+if (!hotspotContainer) {
+    console.error("Error: .hotspot-container element not found!");
+    return; // Stop execution if element is missing
+}
+if (data.data.length > 0) {
+    let banner = data.data[0]; // Assuming only one banner object
+
+    bannerContainer.classList.remove('d-none');
+
+    let bannerImage = document.getElementById('elevate-banner');
+    let text = document.getElementById('elevate-text');
+    let ctaText = document.getElementById('elevate-cta-text');
+    let hotspotDiv = document.getElementById('hotspot1'); // Get the existing hotspot
+    let popupDiv = document.getElementById('hotspot1-popup'); // Get the existing popup inside the hotspot
+
+    // Update text and CTA
+    if (text && banner.text) {
+        text.innerHTML = banner.text;
+    }
+
+    if (ctaText && banner.cta_text) {
+        ctaText.innerHTML = banner.cta_text;
+        ctaText.href = banner.redirect_url;
+    }
+
+    // Update banner image based on screen width
+    let screenWidth = window.innerWidth;
+    if (bannerImage) {
+        bannerImage.src = screenWidth > 820 ? banner.image_url : banner.mobile_image_url;
+    }
+
+    // If hotspots exist in the API response, update the first one
+    if (banner.hotspots_with_product && banner.hotspots_with_product.length > 0) {
+    banner.hotspots_with_product.forEach((hotspotData, index) => {
+        let hotspotDiv = document.getElementById(`hotspot-${index}`); // Assuming each hotspot has a unique ID
+        let popupDiv = document.getElementById(`popup-${index}`);
+
+        if (hotspotDiv) {
+            // Update position based on screen width
+            if (screenWidth > 820) {
+                hotspotDiv.style.top = hotspotData.desktop.top;
+                hotspotDiv.style.left = hotspotData.desktop.left;
+            } else {
+                hotspotDiv.style.top = hotspotData.mobile.top;
+                hotspotDiv.style.left = hotspotData.mobile.left;
+            }
+        }
+
+        // Update popup content
+        if (popupDiv) {
+            let img = popupDiv.querySelector("img");
+            let productTitle = popupDiv.querySelector(".product-title");
+            let productDesc = popupDiv.querySelector(".product-description");
+
+            if (img) {
+                img.src = hotspotData.product.product_images[0] || "assets/images/default-product.jpg";
+                img.style.width = "200px";
+            }
+            if (productTitle) productTitle.innerText = hotspotData.product.product_name;
+            if (productDesc) productDesc.innerText = hotspotData.product.product_description;
+        }
+    });
+}
+
+}
+
+});
+
+
+
+        document.querySelectorAll('.hotspot').forEach(hotspot => {
+    hotspot.addEventListener('click', function () {
+        this.classList.toggle('hotspot-active'); // Toggle the popup visibility
+    });
+});
+</script>

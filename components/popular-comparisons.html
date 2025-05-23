@@ -1,0 +1,94 @@
+<div class="container popular-comparison-wrapper">
+    <div class="as-title popular-comparison-header" style="padding-top: 0;">Popular Products To Compare</div>
+    <div class="popular-comparison-container" id="popular-comparison-container"></div>
+</div>
+
+<script>
+    const chunkArray = (array, chunkSize) => {
+        return array.reduce((result, item, index) => {
+            const chunkIndex = Math.floor(index / chunkSize);
+            if (!result[chunkIndex]) {
+                result[chunkIndex] = [];
+            }
+            result[chunkIndex].push(item);
+            return result;
+        }, []);
+    };
+
+    fetch(`${baseUrl}/top-compared`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const popularContainer = document.getElementById('popular-comparison-container');  
+        let popularProducts = data.data;
+        let productIds = [];
+        let productNames = [];
+        popularContainer.insertAdjacentHTML('beforeend', `<div class="popular-products-container">
+            ${popularProducts.map((product) => {
+                productIds.push(product.id);
+                productNames.push(product.product_name);
+                return `<div class="popular-product-card">
+                    <div class="d-flex">
+                        <div class="left-aligned">
+                            <div class="product-offer"
+                                style="background:white;padding: 6px;color: var(--primary-color);border: 1px solid var(--primary-color);">
+                                ${product.series !== null ? product.series.name : ''}
+                            </div>
+                            <div class="product-stock"
+                                style="background:white;padding: 6px;color: var(--primary-color);border: 1px solid var(--primary-color);">
+                                ${product.discount_upto}%
+                            </div>
+                        </div>
+                        <div class="right-aligned">
+                            <img src="assets/images/product/star.svg" alt="star" class="star-class">
+                            <img src="assets/images/product/star.svg" alt="star" class="star-class">
+                            <img src="assets/images/product/star.svg" alt="star" class="star-class">
+                            <img src="assets/images/product/star.svg" alt="star" class="star-class">
+                            <img src="assets/images/product/star.svg" alt="star" class="star-class">
+                            <div class="total-rating" style="padding-top: 6px;">(24)</div>
+                        </div>
+                    </div>
+                    <div class="popular-product-content-container">
+                        <div class="trends-image-container" style="background:#D9D9D6">
+                            <img src="${product.product_images[0]}" alt="product-cabinet"
+                                class="hot-deals-product-image" style="position: static;">
+                        </div>
+                        <div class="trends-content-container"
+                            style="padding-left: 3px;padding-right: 0;padding-top: 0;padding-bottom: 0;">
+                            <div class="product-title">${product.product_name}</div>
+                            <div class="product-description">${product.product_description}</div>
+                            
+                            
+                            
+                            <div class="price-container">
+                                <div>
+                                    <span class="offer-price">${formatPriceInINR(product.product_discounted_price)}</span>
+                                    <span class="real-price">${formatPriceInINR(product.product_main_price)}</span>
+                                </div>
+                                <div class="saved-price" style="padding: 5px;">Save ${formatPriceInINR(product.product_offer_value)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="final-card-section">
+                        <div class="compare-checkbox-container"> 
+                            <input class="compare-checkbox" type="checkbox" id="product_${product.id}" name="product" value="${product.id}" onchange="handleComparisonToggle(this, ${product.id}, '${product.product_name}', '${product.product_images[0]}')">
+                            <label for="product_${product.id}" class="compare-text" >Compare Product</label>
+                        </div>
+                        <button class="buy-now-button" onclick="handleRoute('${product.buy_now_url}')">Buy Now</button>
+                    </div>
+                     
+                    
+                    
+                    
+                </div>`
+            }).join('')}
+        </div>`);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+</script>

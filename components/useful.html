@@ -1,0 +1,82 @@
+
+<div class="useful-tips-container">
+    <div class="useful-tips-title">Useful Laptop Tips Just For You</div>
+    <div class="useful-tips-subtitle">
+        <div>Find Product Tips, Troubleshooting videos and useful</div>
+        <div>tech-related knowledge from ASUS!</div>
+    </div>
+   
+    <div class="useful-tips-videos-container">
+        <div class="swiper-container-1">
+            <div id="swiper-wrapper-1" class="swiper-wrapper d-none"></div>
+            <!-- Add Pagination -->
+        
+        </div>
+        <div class="swiper-buttons-container-1">
+            <div class="swiper-button-prev-1"><i class="fas fa-chevron-left"></i></div>
+            <div class="swiper-button-next-1"><i class="fas fa-chevron-right"></i></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    fetch(`${baseUrl}/component/useful_laptop_tips`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+            let container = document.getElementById('swiper-wrapper-1');
+            if(data.data.length > 0)
+            {
+                container.classList.remove('d-none');
+                data.data.forEach((video_id, index) => {                    
+                    container.insertAdjacentHTML('beforeend',`<div class="swiper-slide video-container"><iframe width="100%" height="100%" 
+                        src="https://www.youtube.com/embed/${video_id}" 
+                        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen 
+                        title="YouTube video">
+                    </iframe></div>`);
+                });
+            }          
+        });
+
+    // swiper code
+    var swiper = new Swiper('.swiper-container-1', {
+        slidesPerView: 'auto', // Show one slide at a time
+        spaceBetween: 20, // No space between slides
+        loop: true, // Enable loop mode
+        // autoplay: {
+        //     delay: 5000, // Autoplay delay in milliseconds
+        //     disableOnInteraction: false, // Keep autoplay running even when user interacts with the slider
+        // },
+        // Responsive breakpoints
+        breakpoints: {
+            // When window width is <= 820px
+            900: {
+                slidesPerView: 3,
+            },
+            820: {
+                slidesPerView: 2, // Show only one slide per view
+            },
+            768: {
+                slidesPerView: 2,
+            },
+            450: {
+                slidesPerView: 2,
+            },
+            // Add more breakpoints and settings as needed
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next-1',
+            prevEl: '.swiper-button-prev-1',
+        },
+        centered:false
+    });
+</script>

@@ -1,0 +1,30 @@
+<div style="position:fixed;z-index: 9999999;bottom:200px" id="modal">
+    <div id="modal-overlay">
+        <span id="close-modal">&times;</span>
+        <div id="lottie-container"></div>
+    </div>
+    <span style="position: absolute; top: 10px; right: 10px; font-size: 34px; cursor: pointer; z-index: 10; display:none">&times;</span>
+</div>
+<div id="comparison-container" class="comparison-container">
+
+    <div class="comparison-content">
+        <div id="comparison-box"></div>
+        <div id="comparison-box"></div>
+        <div id="comparison-box"></div>
+        <div id="comparison-box"></div>
+    </div>
+
+    <div class="comparison-buttons-container">
+        <div class="clear-all-container"><button class="clear-all" onclick="handleClearComparison()">Clear All</button>
+        </div>
+        <div class="comparison-text">Compare up to 4 products</div>
+        <button id="comparison-button" class="comparison-button" onclick="handleCompareClick()">Compare</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('close-modal').addEventListener('click', function () {
+        document.getElementById('modal').style.display = 'none';
+        lottie.destroy("Comparison Animation");
+    });
+</script>

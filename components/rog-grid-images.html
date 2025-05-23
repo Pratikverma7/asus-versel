@@ -1,0 +1,116 @@
+<div class="container carousel-container" id="grid-images-container">
+    <div class="grid-images">
+        <div class="what-to-buy d-none" id="what-to-buy">
+            <b class="text-bold" id="what-to-buy-bold-text"></b>
+            <p class="text" id="what-to-buy-text"></p>
+            <a class="btn" id="what-to-buy-cta-text"></a>
+        </div>
+        <div class="compare-products-section d-none" id="compare-products-section">
+            <div class="compare-text1">
+                <img src="assets/images/icons/switch.svg" /> 
+                <b class="text-bold" id="compare-products-section-bold-text"></b>
+            </div>
+            <div class="compare-small-text text" id="compare-products-section-text"></div>
+            <div class="images-container" id="compare-products-section-images-container"></div>
+            <a class="btn" id="compare-products-section-cta-text"></a>
+        </div>
+    </div>
+</div>
+
+<script>
+    fetch(`${baseUrl}/banners?banner_type=rog_what_to_buy`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+            let bannerContainer = document.getElementById('what-to-buy');
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let boldText = document.getElementById('what-to-buy-bold-text');
+                let text = document.getElementById('what-to-buy-text');
+                let ctaText = document.getElementById('what-to-buy-cta-text');
+                data.data.forEach((banner, index) => {
+                    if(text && banner.text)
+                    {
+                        text.innerHTML = banner.text;
+                    }
+    
+                    if(boldText && banner.bold_text){
+                        boldText.innerHTML = banner.bold_text;
+                    }
+
+                    if(ctaText && banner.cta_text){
+                        ctaText.innerHTML = banner.cta_text;
+                        ctaText.href = banner.redirect_url;
+                    }
+
+                    if (screenWidth > 820) {
+                        bannerContainer.style.backgroundImage = `url(${banner.image_url})`;
+                    } else {
+                        bannerContainer.style.backgroundImage = `url(${banner.mobile_image_url})`;
+                    }
+                });
+            }          
+        });
+
+    fetch(`${baseUrl}/banners?banner_type=rog_compare_products_section`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+            let bannerContainer = document.getElementById('compare-products-section');
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let boldText = document.getElementById('compare-products-section-bold-text');
+                let text = document.getElementById('compare-products-section-text');
+                let ctaText = document.getElementById('compare-products-section-cta-text');
+                let images = document.getElementById('compare-products-section-images-container');
+                data.data.forEach((banner, index) => {
+                    if(text && banner.text)
+                    {
+                        text.innerHTML = banner.text;
+                    }
+    
+                    if(boldText && banner.bold_text){
+                        boldText.innerHTML = banner.bold_text;
+                    }
+
+                    if(ctaText && banner.cta_text){
+                        ctaText.innerHTML = banner.cta_text;
+                        ctaText.href = banner.redirect_url;
+                    }
+                    
+                    
+                    if(images && banner.compare_images_url){
+                        banner.compare_images_url.forEach((row, index) => {                            
+                            if(row.length > 0){
+                                const carouselItems = row.map((image, index) => 
+                                    `<img src="${image}" class="carousel__item" style="--position: ${index + 1}">`
+                                ).join('');
+                                
+                                images.insertAdjacentHTML('beforeend', `<div class="carousel" reverse="true" style="--width: 100px; --height: 50px; --quantity: 5;--duration: 15s;">
+                                    <div class="carousel__list">
+                                        ${carouselItems}
+                                    </div>
+                                </div>`)
+                            }
+                        })
+                    }
+
+                    if (screenWidth > 820) {
+                        bannerContainer.style.backgroundImage = `url(${banner.image_url})`;
+                    } else {
+                        bannerContainer.style.backgroundImage = `url(${banner.mobile_image_url})`;
+                    }
+                });
+            }          
+        });
+</script>

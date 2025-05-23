@@ -1,0 +1,67 @@
+<div class="container compare-product-banner-container d-none" id="compare-product">
+    <div class="left-side">
+        <p class="title">Compare Products</p>
+        <p class="text" id="compare-product-text"></p>
+        <b class="text-bold" id="compare-product-bold-text"></b>
+    </div>
+    <div class="right-side">
+        <a class="btn" id="compare-product-cta-text"></a>
+    </div>
+</div>
+
+<script>
+    console.log("Script loaded 🚀");
+
+    fetch(`${baseUrl}/banners?banner_type=compare_product_banner`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+
+            console.log("Banner data received:", data.data);
+
+            let bannerContainer = document.getElementById('compare-product');
+            console.log("Banner container exists:", !!bannerContainer);
+
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let boldText = document.getElementById('compare-product-bold-text');
+                let text = document.getElementById('compare-product-text');
+                let ctaText = document.getElementById('compare-product-cta-text');
+                data.data.forEach((banner, index) => {
+                    if(text && banner.text)
+                    {
+                        text.innerHTML = banner.text;
+                    }
+    
+                    if(boldText && banner.bold_text){
+                        boldText.innerHTML = banner.bold_text;
+                    }
+
+                    if(ctaText && banner.cta_text){
+                        ctaText.innerHTML = banner.cta_text;
+                        ctaText.href = banner.redirect_url;
+                    }
+                    
+                    if (screenWidth > 820) {
+                        bannerContainer.style.backgroundImage = `url(${banner.image_url})`;
+                    } else {
+                        bannerContainer.style.backgroundImage = `url(${banner.mobile_image_url})`;
+                    }
+                });
+            }          
+        
+        
+        
+        
+        })
+        .catch(err => {
+  console.error("Fetch error:", err);
+});
+
+
+</script>

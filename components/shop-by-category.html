@@ -1,0 +1,169 @@
+<div id="shop-by-category" class="container pt-40" style="background: #F1F1F1;">
+    <div class="as-title">Shop by Category</div>
+    <div id="category-cards-container" class="product-cards-container ">
+        <div class="dropdown w-100" id="category-dropdown">
+            <div class="select">
+                <span class="selected">Everday Laptops</span>
+                <div class="caret"></div>
+            </div>
+            <ul class="menu" id="category-menu"></ul>
+        </div>
+        <div id="category-container" class="category-container">
+
+        </div>
+    </div>
+    <div class="view-all-container mt-25 mb-40">
+        <button class="view-all" style="background-color: inherit;" onclick="handleCategoryRoute()">View All</button>
+    </div>
+</div>
+<script>
+    var selectedCategory;
+    const dropdown = document.querySelector(".dropdown");
+    const select = dropdown.querySelector(".select");
+    const caret = dropdown.querySelector(".caret");
+    const menu = dropdown.querySelector(".menu");
+    const options = dropdown.querySelectorAll(".menu li");
+    const selected = dropdown.querySelector(".selected");
+    
+    select.addEventListener("click", () => {
+        select.classList.toggle("select-clicked");
+        caret.classList.toggle("caret-rotate");
+        menu.classList.toggle("menu-open")
+    })
+    select.addEventListener("touchstart", () => {
+        select.classList.toggle("select-clicked");
+        caret.classList.toggle("caret-rotate");
+        menu.classList.toggle("menu-open")
+    })
+    options.forEach(option => {
+        option.addEventListener("click", () => {
+            console.log(option,"option")
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach(option => {
+                option.classList.remove("active")
+            })
+            option.classList.add("active");
+            selected.innerText = option.innerText;
+
+        })
+    });
+    options.forEach(option => {
+        option.addEventListener("touchstart", () => {
+            console.log(option,"option")
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach(option => {
+                option.classList.remove("active")
+            })
+            option.classList.add("active");
+            selected.innerText = option.innerText;
+
+        })
+    });
+    fetch(`${baseUrl}/categories`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const categoriesList = document.getElementById('category-container');
+        const mobileCategoriesList = document.getElementById('category-menu');
+
+        data.data.forEach((category,index) => {
+            if(index === 0){
+                selectedCategory = category.id;
+            }
+            categoriesList.insertAdjacentHTML('beforeend',`<div class="list-tab ${index === 0 ? 'active' : ''}" id="sbc-${category.id}" onclick="handleCategory(${category.id})">
+                ${category.category_icon ? `<span><img src=${category.category_icon}alt="everyday-laptop"></span>` : ''}
+                <span>${category.name}</span>
+            </div>`);
+            mobileCategoriesList.insertAdjacentHTML('beforeend',`<li class="list-tab ${index === 0 ? 'active' : ''}" id="sbc-${category.id}" onclick="handleCategory(${category.id})">
+                <span>${category.name}</span>
+            </li>`);
+        });
+
+        let cardsContainer = document.getElementById('category-cards-container');
+
+        fetch(`${baseUrl}/category/${selectedCategory}/products?limit=3`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                data.data.forEach((product) => {
+                    if (screenWidth > 820) {
+                        desktopProductCard(product, cardsContainer, true);
+                    } else {
+                        mobileProductCard(product, cardsContainer, true);
+                    }
+
+                })
+                callSwiperCode();
+            });
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+
+    function handleCategory(id) {
+        selectedCategory = id;
+        let selectedElement = document.getElementById('sbc-' + selectedCategory);
+        let tabsWrapper = document.querySelectorAll('.list-tab');
+
+        // Update active tab
+        tabsWrapper.forEach((tab) => {
+            if ('sbc-' + selectedCategory === tab.id) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+
+        let cardsContainer = document.getElementById('category-cards-container');
+        let productCardsContainer = cardsContainer.querySelectorAll('.product-card');
+
+        // Add fade-out animation before removing elements
+        productCardsContainer.forEach(card => {
+            card.classList.add('fade-out');
+        });
+
+        // Wait for the fade-out animation to complete before removing cards
+        setTimeout(() => {
+            productCardsContainer.forEach(card => card.remove()); // Remove after transition
+
+            // Fetch new products after old ones are removed
+            fetch(`${baseUrl}/category/${id}/products?limit=3`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Create and append new product cards
+                    data.data.forEach((product) => {
+                        let newCard;
+                        if (screenWidth > 820) {
+                            newCard = desktopProductCard(product, cardsContainer, false); // Set to false for direct append
+                        } else {
+                            newCard = mobileProductCard(product, cardsContainer, false); // Set to false for direct append
+                        }
+
+                        if (newCard) {
+                            newCard.classList.add('fade-in'); // Apply fade-in effect
+                            cardsContainer.appendChild(newCard); // Append new card to container
+                        }
+                    });
+
+                    callSwiperCode();
+                });
+        }, 300); // Wait for fade-out animation to complete
+    }
+</script>

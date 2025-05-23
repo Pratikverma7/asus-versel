@@ -1,0 +1,665 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Landing Page</title>
+     <base href="https://asus.3mindsdigital.com"> 
+    <!-- <base href="http://127.0.0.1:5500/"> -->
+
+    <link rel="stylesheet" href="css/fonts/myriad-pro/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/fonts/tt-norms/stylesheet.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+</head>
+
+<body id="main-body" style="overflow-x:hidden !important;width:100%;">
+    <div id="header"></div>
+    <div id="header-top-component"></div>
+    <div id="homepage-banners-component"></div>
+    <div class="container pt-40" id="top-deals-1">
+        <div class="as-title">Top Deals For You</div>
+        <div id="top-deals-products-tabs">
+
+        </div>
+        <!-- <div class="product-cards-container" id="specs-product-cards-container">
+
+        </div> -->
+        <div class="swiper product-cards-container" id="specs-product-cards-container">
+            <div class="swiper-wrapper">
+              <!-- Slides will be inserted here -->
+            </div>
+        </div>
+        <div class="view-all-container mt-25 mb-40">
+            <button class="view-all" onclick="handleRoute('/listing.html?topDeals')">View All</button>
+        </div>
+    </div>
+    <div id="thoughtful-component"></div>
+    <div class="container pt-40" id="shop-deals-container">
+        <div class="as-title">Shop By Budget</div>
+        <div class="d-flex pt-40 pb-40" id="shop-by-budget-tabs">
+
+        </div>
+        <!-- <div class="product-cards-container" id="offer-product-cards-container">
+
+        </div> -->
+        <div class="swiper offer-swiper" id="offer-product-cards-container">
+            <div class="swiper-wrapper">
+              <!-- Slides will be inserted here -->
+            </div>
+        </div>
+          
+          
+        <div class="view-all-container mt-25 mb-40">
+            <button class="view-all" onclick="handleBudgetRoute()">View All</button>
+        </div>
+    </div>
+    <div id="bank-offer-component"></div>
+    <div id="shop-by-category" class="container pt-40" style="background: #F1F1F1;">
+        <div class="as-title">Shop by Category</div>
+
+
+        <div id="category-cards-container" class="product-cards-container ">
+            <!-- <div class="dropdown w-100" id="category-dropdown">
+                <div class="select">
+                    <span class="selected" id="selected-category">Everday Laptops</span>
+                    <img src="assets/images/sort-down.svg" alt="down-arrow" class="down-arrow" style="width: 14px; height: 9px;">
+                    <div class="caret"></div>
+                </div>
+                <ul class="menu" id="category-menu"></ul>
+            </div> -->
+            <div class="dropdown w-100" id="category-dropdown">
+                <div class="select" id="select-category">
+                    <span class="selected" id="selected-category">Everyday Laptops</span>
+                    <img src="assets/images/sort-down.svg" alt="down-arrow" class="down-arrow" id="caret" style="width: 14px; height: 9px;">
+                </div>
+                <ul class="menu" id="category-menu">
+                    <li class="option active">Everyday Laptops</li>
+                    <li class="option">Gaming Laptops</li>
+                    <li class="option">Ultrabooks</li>
+                    <li class="option">Business Laptops</li>
+                </ul>
+            </div>
+            <div id="category-container" class="category-container">
+
+            </div>
+        </div>
+
+
+        <div class="view-all-container mt-25 mb-40">
+            <button class="view-all" style="background-color: inherit;" onclick="handleCategoryRoute()">View All</button>
+        </div>
+    </div>
+    <div id="hot-deal-component"></div>
+    <div id="grid-images-component"></div>
+    <div id="trending-laptops-component" class="pt-40"></div>
+    <div id="exclusive-component"></div>
+    <div id="faq-component"></div>
+    <div id="elevate-component"></div>    
+    <div id="footer"></div>
+    <div id="compare-model-component"></div>
+</body>
+
+<style>
+    .swiper-wrapper, .swiper-slide
+    {
+        height: unset;
+    }
+    .product-card .swiper-button-prev, .product-card .swiper-button-next
+    {
+       display: none;
+    }
+    #bank-offer-component  #swiping-banner-container
+    {
+        padding-top: 0;
+    }
+
+    @media (min-width:768px) and (max-width:990px)
+{
+   
+    .split-container div.split-3:nth-child(3) 
+    {
+        display: none;
+    }
+}
+</style>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script defer type="text/javascript" src="https://asus.oriserve.com/chatbot/static/js/asusprod.js"></script>
+<script src="js/common.js"></script>
+<script src="js/header.js"></script>
+
+<script>
+    // Load Components
+    const components = [
+        {
+            id: 'header',
+            file: 'layout/header.html',
+        },
+        {
+            id: 'header-top-component',
+            file: 'components/header-top.html',
+        },
+        {
+            id: 'homepage-banners-component',
+            file: 'components/homepage-banners.html',
+        },
+        { 
+            id: 'thoughtful-component',
+            file: 'components/thoughtful.html'
+        },
+        { 
+            id: 'bank-offer-component',
+            file: 'components/bank-offer.html'
+        },
+        { 
+            id: 'hot-deal-component',
+            file: 'components/hot-deal.html'
+        },
+        { 
+            id: 'grid-images-component',
+            file: 'components/grid-images.html'
+        },
+        { 
+            id: 'trending-laptops-component',
+            file: 'components/trending-laptops.html'
+        },
+        { 
+            id: 'exclusive-component',
+            file: 'components/exclusive.html'
+        },
+        { 
+            id: 'faq-component',
+            file: 'components/faq.html'
+        },
+        { 
+            id: 'elevate-component',
+            file: 'components/elevate.html'
+        },
+        {
+            id: 'footer',
+            file: 'layout/footer.html'
+        },
+        {
+            id: 'compare-model-component',
+            file: 'components/compare-model.html'
+        }
+    ];
+
+    components.forEach(component => {
+        fetch(component.file).then(response => response.text())
+        .then(data => {
+            const componentElement = document.getElementById(component.id);
+            componentElement.innerHTML = data;
+
+            const scripts = componentElement.getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                eval(scripts[i].innerText);
+            }
+        });
+    });
+
+    // swiper code
+    function callSwiperCode() {
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1, // Show one slide at a time
+            spaceBetween: 0, // No space between slides
+            loop: true, // Enable loop mode
+            autoplay: {
+                delay: 3000, // Autoplay delay in milliseconds
+                disableOnInteraction: false, // Keep autoplay running even when user interacts with the slider
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                renderBullet: function (index, className) {
+                return `<span class="${className}"></span>`;
+            },
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    }
+
+    // fetching all the series
+    fetch(`${baseUrl}/series/top-deals`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let topDealsProducts = [];
+            data.data.forEach(tab => {
+                topDealsProducts.push({ id: tab.id, name: tab.name });
+            })
+            let tabsContainer = document.getElementById('top-deals-products-tabs');
+            topDealsProducts.forEach((tab, index) => {
+
+                let div = document.createElement("div");
+                // Add a class to the div
+                div.classList.add("tab-class");
+                // Set the text content of the div to the product name
+                div.textContent = tab.name;
+                div.onclick = function () {
+                    // Call the handleClick function when the div is clicked
+                    handleTabClick(div, tab.id);
+                };
+                // Append the div to the container
+                tabsContainer.appendChild(div);
+
+                // Call First Tab
+                if (index == 0) {
+                    handleTabClick(div, tab.id);
+                }
+            });
+
+            tabsContainer.children[0].classList.add('active-tab');
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+
+    const handleBudgetTabClick = (tab) => {   
+        tab.classList.add('active-tab');
+        let budgetTabsWrapper = document.querySelectorAll('#shop-by-budget-tabs .tab-class');
+        budgetTabsWrapper.forEach((product, index) => {
+            if (product.id !== tab.id) {
+                product.classList.remove('active-tab');
+            }
+        });
+        if (tab.id === 'under-40') {
+            priceRange = 'less_than_40000'
+        }
+        if (tab.id === 'above-40') {
+            priceRange = '40000_to_60000'
+        }
+        if (tab.id === 'above-60') {
+            priceRange = '60000_to_80000'
+        }
+        if (tab.id === 'above-80') {
+            priceRange = 'greater_than_80000'
+        }
+
+
+        fetch(`${baseUrl}/products?is_rog=0&limit=4&price_range=${priceRange}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const container = document.getElementById('offer-product-cards-container');
+                container.innerHTML = `
+                    <div class="swiper-wrapper"></div>
+                `;
+                const wrapper = container.querySelector('.swiper-wrapper');
+
+                data.data.forEach((product) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'swiper-slide';
+
+                    if (screenWidth > 820) {
+                        desktopProductCard(product, slide, true, false, true);
+                    } else {
+                        mobileProductCard(product, slide, true, false, true);
+                    }
+
+                    wrapper.appendChild(slide);
+                });
+
+                // Initialize Swiper
+                new Swiper('.offer-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 16,
+                    loop: true,
+                    autoplay: {
+                            delay: 3000,      
+                            disableOnInteraction: false, 
+                        },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 2,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                        },
+                        1280: {
+                            slidesPerView: 4,
+                        }
+                    }
+                });
+
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+    }
+
+    let shopByBudget = ['Under ₹40k', '₹40k - ₹60k', '₹60k - ₹80k', '> ₹80k'];
+    let budgetTabContainer = document.getElementById('shop-by-budget-tabs');
+    shopByBudget.forEach((tab, index) => {
+        let div = document.createElement("div");
+        // Add a class to the div
+        div.classList.add("tab-class");
+        // Set the text content of the div to the product name
+        div.textContent = tab;
+        if (index === 0) {
+            div.id = 'under-40';
+        }
+        if (index === 1) {
+            div.id = 'above-40';
+        }
+        if (index === 2) {
+            div.id = 'above-60';
+        }
+        if (index === 3) {
+            div.id = 'above-80';
+        }
+
+        div.onclick = function () {
+            // Call the handleClick function when the div is clicked
+            handleBudgetTabClick(div);
+        };
+        // Append the div to the container
+        budgetTabContainer.appendChild(div);
+
+        if(index == 0){
+            handleBudgetTabClick(div);
+        }
+    });
+
+    budgetTabContainer.children[0].classList.add('active-tab');
+
+    const handleTabClick = (tab, id) => {
+        tab.classList.add('active-tab');
+        let tabsWrapper = document.querySelectorAll('#top-deals-products-tabs .tab-class');
+        tabsWrapper.forEach((product, index) => {
+            if (product.innerHTML !== tab.innerHTML) {
+                product.classList.remove('active-tab');
+            }
+        });
+
+        fetch(`${baseUrl}/series/${id}/products?is_rog=0&limit=4`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                let container = document.getElementById("specs-product-cards-container");
+
+                
+                container.innerHTML = `
+                    <div class="swiper specs-swiper">
+                        <div class="swiper-wrapper"></div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                `;
+
+                const wrapper = container.querySelector('.swiper-wrapper');
+
+                data.data.forEach(product => {
+                    const slide = document.createElement('div');
+                    slide.className = 'swiper-slide';
+
+                    if (screenWidth > 820) {
+                        desktopProductCard(product, slide, false, true);
+                    } else {
+                        mobileProductCard(product, slide, false, true);
+                    }
+
+                    wrapper.appendChild(slide);
+                });
+
+                
+                new Swiper('.specs-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 16,
+                    loop: true,
+                    autoplay: {
+                            delay: 3000,      
+                            disableOnInteraction: false, 
+                        },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 2,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                        },
+                        1280: {
+                            slidesPerView: 4,
+                        }
+                    }
+                });
+
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+
+    }
+
+    let selectedCategory;
+    const dropdown = document.querySelector(".dropdown");
+    const select = dropdown.querySelector(".select");
+    const caret = dropdown.querySelector(".caret");
+    const menu = dropdown.querySelector(".menu");
+    const options = dropdown.querySelectorAll(".menu li");
+    const selected = dropdown.querySelector(".selected");
+    var selectedCategoryName = document.getElementById('selected-category');
+
+    function handleCategory(id) {
+        selectedCategory = id;
+        
+        let selectedElement = document.getElementById('sbc-' + selectedCategory);
+        
+        selectedCategoryName.innerHTML = selectedElement.dataset.name;
+
+        let tabsWrapper = document.querySelectorAll('.list-tab');
+        
+        // Update active tab
+        tabsWrapper.forEach((tab) => {
+            if ('sbc-' + selectedCategory === tab.id) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+
+        let cardsContainer = document.getElementById('category-cards-container');
+        let productCardsContainer = cardsContainer.querySelectorAll('.product-card');
+
+        // Add fade-out animation before removing elements
+        productCardsContainer.forEach(card => {
+            card.classList.add('fade-out');
+        });
+
+        // Wait for the fade-out animation to complete before removing cards
+        setTimeout(() => {
+            productCardsContainer.forEach(card => card.remove()); // Remove after transition
+
+            // Fetch new products after old ones are removed
+            fetch(`${baseUrl}/category/${id}/products?limit=3`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Create and append new product cards
+                    data.data.forEach((product) => {
+                        let newCard;
+                        if (screenWidth > 820) {
+                            newCard = desktopProductCard(product, cardsContainer, false); // Set to false for direct append
+                        } else {
+                            newCard = mobileProductCard(product, cardsContainer, false); // Set to false for direct append
+                        }
+
+                        if (newCard) {
+                            newCard.classList.add('fade-in'); // Apply fade-in effect
+                            cardsContainer.appendChild(newCard); // Append new card to container
+                        }
+                    });
+
+                    callSwiperCode();
+                });
+        }, 300); // Wait for fade-out animation to complete
+
+        menu.classList.remove("menu-open");
+    }
+
+    let banners = document.querySelectorAll('#homepage-banner');
+
+    // Create a new Resize Observer
+    const resizeObserver = new ResizeObserver(entries => {
+        handleViewportResize(entries);
+    });
+
+    // Observe the image element
+    resizeObserver.observe(document.getElementById('main-body'));   
+
+    callSwiperCode();
+    
+    select.addEventListener("click", () => {
+        select.classList.toggle("select-clicked");
+        caret.classList.toggle("caret-rotate");
+        menu.classList.toggle("menu-open")
+    })
+    options.forEach(option => {
+        option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach(option => {
+                option.classList.remove("active")
+            })
+            option.classList.add("active")
+        })
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch(`${baseUrl}/categories`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const categoriesList = document.getElementById('category-container');
+            const mobileCategoriesList = document.getElementById('category-menu');
+
+            data.data.forEach((category,index) => {
+                if(index === 0){
+                    selectedCategory = category.id;
+                    selectedCategoryName.innerHTML = category.name;
+                }
+                categoriesList.insertAdjacentHTML('beforeend',`<div class="list-tab ${index === 0 ? 'active' : ''}" id="sbc-${category.id}" data-name="${category.name}" onclick="handleCategory(${category.id})">
+                    ${category.category_icon ? `<span><img src=${category.category_icon}alt="everyday-laptop"></span>` : ''}
+                    <span>${category.name}</span>
+                </div>`);
+                mobileCategoriesList.insertAdjacentHTML('beforeend',`<li class="list-tab ${index === 0 ? 'active' : ''}" id="sbc-${category.id}" data-name="${category.name}" onclick="handleCategory(${category.id})">
+                    ${category.name}
+                </li>`);
+            });
+
+            let cardsContainer = document.getElementById('category-cards-container');
+
+            fetch(`${baseUrl}/category/${selectedCategory}/products?limit=3`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    data.data.forEach((product) => {
+                        if (screenWidth > 820) {
+                            desktopProductCard(product, cardsContainer, true);
+                        } else {
+                            mobileProductCard(product, cardsContainer, true);
+                        }
+
+                    })
+                    callSwiperCode();
+                });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    });
+
+    function handleCategoryRoute() {
+        window.location.href = `/listing.html?category=${selectedCategory}`;
+    }
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("select-category");
+    const caret = document.getElementById("caret");
+    const menu = document.getElementById("category-menu");
+    const options = menu.querySelectorAll(".option");
+    const selected = document.getElementById("selected-category");
+
+    select.addEventListener("click", () => {
+        select.classList.toggle("select-clicked");
+        caret.classList.toggle("caret-rotate");
+        menu.classList.toggle("menu-open");
+    });
+
+    options.forEach(option => {
+        option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+
+            options.forEach(opt => opt.classList.remove("active"));
+            option.classList.add("active");
+        });
+    });
+});
+
+
+</script>
+
+
+
+
+
+</html>

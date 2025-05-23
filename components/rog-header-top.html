@@ -1,0 +1,30 @@
+<div class="container header-top-container">
+    <div class="exclusive-container">
+        <div>Exclusive Offers</div>
+        <img src="assets/images/arrow-Icon.svg" alt="" class="arrow-Icon" />
+    </div>
+    <div class="maney-container d-none" id="exclusive-offers"></div>
+</div>
+<script>
+    fetch(`${baseUrl}/component/rog_exclusive_offers`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+            let container = document.getElementById('exclusive-offers');
+            if(data.data.length > 0)
+            {
+                container.classList.remove('d-none');
+                data.data.forEach((offer, index) => {                    
+                    container.insertAdjacentHTML('beforeend',`<div class="emi-container">
+                        <img src="${offer.image}" class="header-svg" alt=""
+                            style="width: 22px; height: 22px; margin-right: 5px;" />
+                        <div>${offer.text}</div>
+                    </div>`);
+                });
+            }          
+        });
+</script>

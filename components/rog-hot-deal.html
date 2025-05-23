@@ -1,0 +1,120 @@
+
+<div class="container split-component pt-40" id="#split-component">
+    <div class="as-title">Hot Deals</div>
+    <div class="split-container" id="hot-deals-container">
+    </div>
+    <div class="view-all-container mt-25 mb-40">
+        <button class="view-all" style="background-color: inherit;padding: 16px 32px;"
+            onclick="handleRoute('/rog-listing.html?hotDeals')">Explore More</button>
+    </div>
+</div>
+
+<script>
+    fetch(`${baseUrl}/hot-deals-home?is_rog=1`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        let hotDealsContainer = document.getElementById('hot-deals-container');
+        let productsData = data.data;
+        let productHtml;
+        productsData.forEach((product, index) => {
+            productHtml = `<div class="split-1">
+            <img src="${productsData[0]?.product_images[0]}" alt="tuff-motherboard"
+                class="hot-deals-banner-product-image">
+            <div class="image-text-highlight">${productsData[0]?.series?.name}</div>
+        </div>
+        <div class="split-2">
+            <div class="product-card-2">
+                <div class="hot-deals-image-container">
+                    <div class="product-offer-text">${productsData[1]?.discount_upto}%</div>
+                    <img src="${productsData[1]?.product_images[0]}" alt="product-cabinet"
+                        class="hot-deals-product-image">
+                </div>
+                <div class="hot-deals-content-container">
+                    <div class="product-title" style="padding-bottom: 8px;">${productsData[1]?.product_name}
+                    </div>
+                    <div class="product-description" style="padding-bottom: 8px;">${productsData[1].product_description.slice(0, 60).concat('...')}</div>
+                    <div class="price-container" style="padding-bottom: 8px;">
+                        <span class="offer-price">${formatPriceInINR(productsData[1]?.product_discounted_price)}*</span>
+                        <span class="real-price">${formatPriceInINR(productsData[1].product_main_price)}</span>
+                        <span class="saved-price">Save ${formatPriceInINR(productsData[1]?.product_offer_value)}</span>
+                    </div>
+                    <div class="left-aligned"><button class="buy-now-button" onclick="handleRoute('${productsData[1].buy_now_url}')">Buy
+                            Now</button></div>
+                </div>
+            </div>
+            <div class="product-card-2">
+                    <div class="hot-deals-image-container">
+                    <div class="product-offer-text">${productsData[2]?.discount_upto}%</div>
+                    <img src="${productsData[2]?.product_images?.[0]}" alt="product-cabinet"
+                        class="hot-deals-product-image">
+                </div>
+                <div class="hot-deals-content-container">
+                    <div class="product-title" style="padding-bottom: 8px;">${productsData[2]?.product_name}
+                    </div>
+                    <div class="product-description" style="padding-bottom: 8px;">${productsData[2]?.product_description?.slice(0, 60).concat('...')}</div>
+                    <div class="price-container" style="padding-bottom: 8px;">
+                        <span class="offer-price">${formatPriceInINR(productsData[2]?.product_discounted_price)}*</span>
+                        <span class="real-price">${formatPriceInINR(productsData[2]?.product_main_price)}</span>
+                        <span class="saved-price">Save ${formatPriceInINR(productsData[2]?.product_offer_value)}</span>
+                    </div>
+                    <div class="left-aligned"><button class="buy-now-button" onclick="handleRoute('${productsData[2]?.buy_now_url}')">Buy
+                            Now</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="split-3">
+            <div class="product-card-2">
+                <div class="hot-deals-image-container">
+                    <div class="product-offer-text">${productsData[3]?.discount_upto}%</div>
+                    <img src="${productsData[3]?.product_images?.[0]}" alt="product-cabinet"
+                        class="hot-deals-product-image">
+                </div>
+                <div class="hot-deals-content-container">
+                    <div class="product-title" style="padding-bottom: 8px;">${productsData[3]?.product_name}
+                    </div>
+                    <div class="product-description" style="padding-bottom: 8px;">${productsData[3]?.product_description?.slice(0, 60).concat('...')}</div>
+                    <div class="price-container" style="padding-bottom: 8px;">
+                        <span class="offer-price">${formatPriceInINR(productsData[3]?.product_discounted_price)}*</span>
+                        <span class="real-price">${formatPriceInINR(productsData[3]?.product_main_price)}</span>
+                        <span class="saved-price">Save ${formatPriceInINR(productsData[3]?.product_offer_value)}</span>
+                    </div>
+                    <div class="left-aligned"><button class="buy-now-button" onclick="handleRoute('${productsData[3]?.buy_now_url}')">Buy
+                            Now</button></div>
+                </div>
+            </div>
+            <div class="product-card-2">
+                <div class="hot-deals-image-container">
+                    <div class="product-offer-text">${productsData[4]?.discount_upto}%</div>
+                    <img src="${productsData[4]?.product_images?.[0]}" alt="product-cabinet"
+                        class="hot-deals-product-image">
+                </div>
+                <div class="hot-deals-content-container">
+                    <div class="product-title" style="padding-bottom: 8px;">${productsData[4]?.product_name}
+                    </div>
+                    <div class="product-description" style="padding-bottom: 8px;">${productsData[4]?.product_description?.slice(0, 60).concat('...')}</div>
+                    <div class="price-container" style="padding-bottom: 8px;">
+                        <span class="offer-price">${formatPriceInINR(productsData[4]?.product_discounted_price)}*</span>
+                        <span class="real-price">${formatPriceInINR(productsData[4]?.product_main_price)}</span>
+                        <span class="saved-price">Save ${formatPriceInINR(productsData[4]?.product_offer_value)}</span>
+                    </div>
+                    <div class="left-aligned"><button class="buy-now-button" onclick="handleRoute('${productsData[4]?.buy_now_url}')">Buy
+                            Now</button></div>
+                </div>
+            </div>
+        </div>`;
+
+        });
+
+        // Append the first child (the product card) to the main container
+        hotDealsContainer.innerHTML = productHtml;
+
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+</script>
