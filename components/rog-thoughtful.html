@@ -1,0 +1,40 @@
+<div class="thoughtful-banner-container" id="thoughtful-banner-container" class="d-none">
+    <div class="thoughtful-text-container">
+        <b id="thoughtful-bold-text"></b>
+        <p id="thoughtful-text"></p>
+    </div>
+</div>
+<script>
+    fetch(`${baseUrl}/banners?banner_type=rog_thoughtful_banner`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {  
+            let bannerContainer = document.getElementById('thoughtful-banner-container');
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let boldText = document.getElementById('thoughtful-bold-text');
+                let text = document.getElementById('thoughtful-text');
+                data.data.forEach((banner, index) => {
+                    if(text && banner.text)
+                    {
+                        text.innerHTML = banner.text;
+                    }
+    
+                    if(boldText && banner.bold_text){
+                        boldText.innerHTML = banner.bold_text;
+                    }
+                    
+                    if (screenWidth > 820) {
+                        bannerContainer.style.backgroundImage = `url(${banner.image_url})`;
+                    } else {
+                        bannerContainer.style.backgroundImage = `url(${banner.mobile_image_url})`;
+                    }
+                });
+            }          
+        });
+</script>

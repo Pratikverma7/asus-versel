@@ -1,0 +1,113 @@
+<div class="container">
+    <div class="search-content-wrapper">
+        <div class="search-content-container">
+            <div class="search-content-title"><span><img src="assets/images/bar-chart.svg" alt="bar-chart"></span><span
+                    class="search-title-text">Search your Desired Model</span>
+            </div>
+            <div class="search-content-subtitle">
+                Locate your perfect ASUS laptop at a store near you.
+            </div>
+            <div class="search-placeholder-image">
+                <img src="assets/images/search-placeholder-icon.svg" alt="search-placeholder">
+            </div>
+        </div>
+        <div class="search-input-container">
+            <form action="javascript:void(0);" id="search-model-form" class="search-input-wrapper">
+                <div class="search-header-container">
+                    <div class="left-aligned search-input-title">
+                        <span style="margin: auto 0 auto 0;">
+                            <img src="assets/images/bar-chart.svg" alt="bar-chart" class="small-bar-chart">
+                        </span>
+                        <span class="locate-title">Locate on</span>
+                    </div>
+                    <div class="right-aligned search-input-switch">
+                        <div class="switch-field">
+                            <input type="radio" id="radio-one" name="Category" value="eshop" checked />
+                            <label class="switch-label" for="radio-one">Eshop</label>
+                            <input type="radio" id="radio-two" name="Category" value="exclusive" />
+                            <label class="switch-label" for="radio-two">Exclusive Store</label>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" name="Pincode" placeholder="Enter pincode" class="search-model-input" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+                <input type="text" name="ModelName" placeholder="Enter model number" class="search-model-input" maxlength="56" required>
+                <button type="submit" class="input-search-button">Search</button>
+            </form>
+        </div>
+    </div>
+    <div id="search-result">
+        <div class="store-container d-none" id="store-container"></div>
+        <div class="no-store-text  error-color"  id="no-store-text">No Near Store Available Right Now</div>
+    </div>
+</div>
+<script>
+    let searchModelForm = document.getElementById('search-model-form');
+    let searchResult = document.getElementById('search-result');
+    let storeContainer = document.getElementById('store-container');
+    let noStoreText = document.getElementById('no-store-text');
+    noStoreText.classList.add('d-none');
+
+    searchModelForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        if (!searchModelForm.checkValidity()) {  
+            searchModelForm.reportValidity();
+            return false;         
+        }
+        // Clear Previous Result
+        storeContainer.innerHTML = "";
+
+        let formData = $('#search-model-form').serializeArray();
+        let formattedData = {};
+        formData.forEach(item => {
+            formattedData[item.name] = item.value;
+        });
+        $.ajax({
+            url: `${baseUrl}/search-by-model`,
+            type: 'POST',
+            data: formattedData,
+            success: (response) => {
+                if(response.data.length > 0){
+                    noStoreText.classList.add('d-none');
+                    storeContainer.classList.remove('d-none');
+
+                    response.data.forEach(store => {
+                        storeContainer.insertAdjacentHTML('beforeend',`<div class="store-card">
+                            <h2 class="store-name">${store.StoreName}</h2>
+                            <div class="store-address">
+                                <img src="assets/images/icons/marker-pin.svg" alt="pinpoint" />
+                                <p>${(store.Address + ","+ store.City +" - "+ store.PinCode).slice(0, 100).concat('...')}</p>
+                            </div>
+                            <div class="store-detail-direction">                                
+                                <div class="store-product-available">
+                                    <img src="assets/images/icons/laptop.svg" alt="Store Icon" />
+                                    <p>Product Available</p>
+                                </div>
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=${store.Latitude},${store.Longitute}" target="_blank" rel="noopener noreferrer" class="store-direction">
+                                    <img src="assets/images/icons/navigation-pointer.svg" alt="NAvigation" />
+                                    <p>Get Directions</p>
+                                </a>
+                            </div>
+                            <a href="tel:${store.ContactNo}" class="btn btn-primary">Call +${store.ContactNo}</a>
+                        </div>`);
+                    });
+                }
+                else
+                {
+                    storeContainer.classList.add('d-none');
+                    noStoreText.classList.remove('d-none');
+noStoreText.classList.add("error-color")
+               
+                }
+                const formPosition = searchModelForm.getBoundingClientRect().top + window.pageYOffset;                
+                window.scrollTo({
+                    top: formPosition + 40,
+                    behavior: 'smooth'
+                });
+            },
+            error: (error) => {
+                console.error("Error: ",error);
+            }
+        });
+    });
+</script>

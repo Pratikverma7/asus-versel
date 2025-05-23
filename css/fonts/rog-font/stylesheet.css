@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Asus Rog';
+    src: url('AsusRog-Regular.woff2') format('woff2'),
+        url('AsusRog-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

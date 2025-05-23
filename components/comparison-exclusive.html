@@ -1,0 +1,126 @@
+<div class="container exclusive-banner-container d-none" id="exclusive-banner-container">
+    <div class="exclusive-banner-left-side-container">
+        <p id="exclusive-text"></p>
+        <a class="btn" id="exclusive-cta-text"></a>
+    </div>
+    <img id="exclusive-banner" src="" alt="laptop-banner" class="w-100" style="padding-top: 40px;padding-bottom: 40px;">
+    <ul id="countdown">
+        <li id="hours">
+            <div class="number">00</div>
+            <div class="label">Hours</div>
+        </li>
+        <li id="minutes">
+            <div class="number">00</div>
+            <div class="label">Minutes</div>
+        </li>
+        <li id="seconds">
+            <div class="number">00</div>
+            <div class="label">Seconds</div>
+        </li>
+    </ul>
+</div>
+
+<script>    
+    fetch(`${baseUrl}/banners?banner_type=comparison_exclusive_deal_banner`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let bannerContainer = document.getElementById('exclusive-banner-container');
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let bannerImage = document.getElementById('exclusive-banner');
+                let text = document.getElementById('exclusive-text');
+                let ctaText = document.getElementById('exclusive-cta-text');
+                data.data.forEach((banner, index) => {   
+                    if(text && banner.text)
+                    {
+                        text.innerHTML = banner.text;
+                    }
+
+                    if(ctaText && banner.cta_text){
+                        ctaText.innerHTML = banner.cta_text;
+                        ctaText.href = banner.redirect_url;
+                    }
+                    if (screenWidth > 820) {
+                        bannerImage.src = banner.image_url;
+                    } else {
+                        bannerImage.src = banner.mobile_image_url;
+                    }
+                });
+            }
+        });
+
+    var targetDate = new Date("2022/12/25 00:00:00");
+
+    var days;
+    var hrs;
+    var min;
+    var sec;
+
+    $(function () {
+        // Calculate time until launch date
+        timeToLaunch();
+        // Transition the current countdown from 0 
+        numberTransition('#days .number', days, 1000, 'easeOutElastic');
+        numberTransition('#hours .number', hrs, 1000, 'easeOutElastic');
+        numberTransition('#minutes .number', min, 1000, 'easeOutElastic');
+        numberTransition('#seconds .number', sec, 1000, 'easeOutElastic');
+        // Begin Countdown
+        setTimeout(countDownTimer, 1001);
+    });
+
+    function timeToLaunch() {
+        // Get the current date
+        var currentDate = new Date();
+
+        // Find the difference between dates
+        var diff = (currentDate - targetDate) / 1000;
+        var diff = Math.abs(Math.floor(diff));
+
+        // Check number of days until target
+        days = Math.floor(diff / (24 * 60 * 60));
+        sec = diff - days * 24 * 60 * 60;
+
+        // Check number of hours until target
+        hrs = Math.floor(sec / (60 * 60));
+        sec = sec - hrs * 60 * 60;
+
+        // Check number of minutes until target
+        min = Math.floor(sec / (60));
+        sec = sec - min * 60;
+    }
+
+    function countDownTimer() {
+
+        // Figure out the time to launchś
+        timeToLaunch();
+
+        // Write to countdown component
+        $("#days .number").text(days);
+        $("#hours .number").text(hrs);
+        $("#minutes .number").text(min);
+        $("#seconds .number").text(sec);
+
+        // Repeat the check every second
+        setTimeout(countDownTimer, 1000);
+    }
+
+    function numberTransition(id, endPoint, transitionDuration, transitionEase) {
+        // Transition numbers from 0 to the final number
+        $({ numberCount: $(id).text() }).animate({ numberCount: endPoint }, {
+            duration: transitionDuration,
+            easing: transitionEase,
+            step: function () {
+                $(id).text(Math.floor(this.numberCount)).addClass('number-transition');
+            },
+            complete: function () {
+                $(id).text(this.numberCount).addClass('number-transition');
+            }
+        });
+    };
+</script>

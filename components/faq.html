@@ -1,0 +1,121 @@
+<div class="container pt-40 pb-40">
+    <div class="as-title faq-title">Frequently Asked Questions</div>
+    <div class="faq-container">
+        <div id="faq-tabs-container" class="faq-tabs-container"></div>
+        <div class="boxaccordion" id="faqs-main-container"></div>
+    </div>
+</div>
+
+<script>    
+    const handleFaqTab = (tab, index, data) => {
+        tab.classList.add('active-faq-tab');
+        let tabsWrapper = document.querySelectorAll('.faq-tab');
+        tabsWrapper.forEach((product) => {
+            if (product.innerHTML !== tab.innerHTML) {
+                product.classList?.remove('active-faq-tab');
+            }
+        });
+        let faqContainer = document.getElementById('faqs-main-container');
+        faqContainer.innerHTML = ''; 
+
+        const containerDiv = document.createElement('div');
+        containerDiv.classList.add('containerwidth');
+
+        data.questions.forEach((question, index) => {
+            const wrapperDiv = document.createElement('div');
+            wrapperDiv.classList.add('wrapper');
+            const button = document.createElement('button');
+            button.classList.add('toggle');
+            button.innerHTML = `${question} <i class="fas fa-plus icon"></i>`;
+            button.addEventListener('click', function() {
+                handleToggle(index);
+            });
+            const contentDiv = document.createElement('div');
+            contentDiv.classList.add('content');
+
+            const answerParagraph = document.createElement('p');
+            answerParagraph.classList.add('answer');
+            answerParagraph.textContent = data.answers[index];
+            contentDiv.appendChild(answerParagraph);
+            wrapperDiv.appendChild(button);
+            wrapperDiv.appendChild(contentDiv);
+            containerDiv.appendChild(wrapperDiv);
+        });
+
+        faqContainer.appendChild(containerDiv);
+    }
+
+    function handleToggle(index) {
+        var content = document.querySelectorAll('.content')[index];
+        let toggle = document.querySelectorAll(".toggle")[index];
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+            content.style.height = null;
+            toggle.children[0].classList.add('fa-plus');
+            toggle.children[0].classList.remove('fa-minus');
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.style.height = content.scrollHeight + "px";
+            toggle.children[0].classList.add('fa-minus');
+            toggle.children[0].classList.remove('fa-plus');
+        }
+    }
+
+    fetch(`${baseUrl}/faqs`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        let faqTabs = [];
+        data.data.forEach(tab => {
+            faqTabs.push({ 'topic': tab.topic, data: tab });
+        })
+        let tabsContainer = document.getElementById('faq-tabs-container');
+        faqTabs.forEach((tab, index) => {
+            let div = document.createElement("div");
+            div.classList.add("faq-tab");
+            div.textContent = tab.topic;
+            div.onclick = function () {
+                handleFaqTab(div, index + 1, tab.data);
+            };
+            tabsContainer.appendChild(div);
+        });
+
+        tabsContainer.children[0].classList.add('active-faq-tab');
+
+        let faqContainer = document.getElementById('faqs-main-container');
+        faqContainer.innerHTML = ''; 
+
+        const containerDiv = document.createElement('div');
+        containerDiv.classList.add('containerwidth');
+
+        data.data[0].questions.forEach((question, index) => {
+            const wrapperDiv = document.createElement('div');
+            wrapperDiv.classList.add('wrapper');
+            const button = document.createElement('button');
+            button.classList.add('toggle');
+            button.innerHTML = `${question} <i class="fas fa-plus icon"></i>`;
+            button.addEventListener('click', function() {
+                handleToggle(index);
+            });
+            const contentDiv = document.createElement('div');
+            contentDiv.classList.add('content');
+
+            const answerParagraph = document.createElement('p');
+            answerParagraph.classList.add('answer');
+            answerParagraph.textContent = data.data[0].answers[index];
+            contentDiv.appendChild(answerParagraph);
+            wrapperDiv.appendChild(button);
+            wrapperDiv.appendChild(contentDiv);
+            containerDiv.appendChild(wrapperDiv);
+        });
+
+        faqContainer.appendChild(containerDiv);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+</script>

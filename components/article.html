@@ -1,0 +1,103 @@
+<div class="container articles-wrapper d-none" id="article-section"
+    style="background: var(--secondary-background);">
+    <div class="as-section-header pt-40">
+        <span class="as-title">Latest Articles</span>
+
+        <div class="view-all-container d-sm-none">
+            <button class="view-all" style="background-color: inherit;padding: 16px 32px;">View All</button>
+        </div>
+    </div>
+    <div class="articles-container overflow-hidden">
+        <div class="swiper-container-2">
+            <div id="swiper-wrapper-2" class="swiper-wrapper">
+                
+            </div>
+        </div>
+       
+    </div>
+    <div class="swiper-buttons-container-2">
+        <div class="swiper-button-prev-2"><i class="fas fa-chevron-left"></i></div>
+        <div class="swiper-button-next-2"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    <div class="view-all-container d-sm-flex d-none pb-40">
+        <button class="view-all" style="background-color: inherit;padding: 16px 32px;">View All</button>
+    </div>
+</div>
+
+<script>
+    fetch(`${baseUrl}/articles`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {  
+        let articleSection = document.getElementById('article-section');
+        if(data.data.length > 0)
+        {
+            if (data.data.length < 4) {
+                document.querySelectorAll('.view-all-container').forEach(button => button.classList.add('d-none'));
+            }
+            articleSection.classList.remove('d-none');
+            let articlesContainer = document.getElementById('swiper-wrapper-2');
+            data.data.forEach((article, index) => {                    
+                articlesContainer.insertAdjacentHTML('beforeend',`<div class="swiper-slide">
+                    <div class="article-image-container">
+                        ${ article.tag != null ? `<div class="article-tag">${article.tag}</div>` : ''}
+                        <img src="${article.image_url}" alt="image1" class="article-image">
+                    </div>
+                    <div class="articles-content-container">
+                        <div class="article-title">${article.title}</div>
+                        <div class="article-date-author">
+                            <span>${article.formatted_date}</span>
+                            <span>By ${article.author}</span>
+                        </div>
+                        <div class="article-description">${article.description.slice(0, 130).concat('...')}</div>
+                        <a href="${article.redirect_url}" target="_blank" class="read-more-container">
+                            <span>Read more</span>
+                            <span><img src="assets/images/icons/arrow.svg" alt="arrow" /></span>
+                        </a>
+                    </div>
+                </div>`);
+            });
+        }          
+    });
+    
+    // swiper code
+    var swiper = new Swiper('.swiper-container-2', {
+        slidesPerView: 'auto', // Show one slide at a time
+        spaceBetween: 20, // No space between slides
+        loop: false, // Enable loop mode
+        autoplay: {
+            delay: 3000, // Autoplay delay in milliseconds
+            disableOnInteraction: false, // Keep autoplay running even when user interacts with the slider
+        },
+        // Responsive breakpoints
+        breakpoints: {
+            // When window width is <= 820px
+            900: {
+                slidesPerView: 3,
+            },
+            820: {
+                slidesPerView: 2, // Show only one slide per view
+            },
+            768: {
+                slidesPerView: 2,
+            },
+            450: {
+                slidesPerView: 2,
+            },
+            // Add more breakpoints and settings as needed
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next-2',
+            prevEl: '.swiper-button-prev-2',
+        },
+    });
+
+</script>

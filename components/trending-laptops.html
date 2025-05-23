@@ -1,0 +1,163 @@
+<div class="container split-component trending-section pt-40" id="#split-component">
+    <div class="as-title trending-deals-title">New & Trending Range of Laptops</div>
+    <div class="split-container" id="trending-deals-container">
+     
+    </div>
+    <div class="view-all-container mt-25 mb-40">
+        <button class="view-all" style="background-color: inherit;padding: 16px 32px;" onclick="handleRoute('/listing.html?trending')">View All</button>
+    </div>
+</div>
+
+<script>
+    function loadTrendingBanner(){
+        fetch(`${baseUrl}/banners?banner_type=trending_banner`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let bannerContainer = document.getElementById('trending-banner-image');
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let ctaText = document.getElementById('trending-banner-cta-text');
+                data.data.forEach((banner, index) => {
+                    if(ctaText && banner.cta_text){
+                        ctaText.innerHTML = banner.cta_text;
+                        ctaText.href = banner.redirect_url;
+                    }
+
+                    if (screenWidth > 820) {
+                        bannerContainer.style.backgroundImage = `url(${banner.image_url})`;
+                    } else {
+                        bannerContainer.style.backgroundImage = `url(${banner.mobile_image_url})`;
+                    }
+                });
+            }
+        });
+    }
+
+    fetch(`${baseUrl}/trending-deals-home`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        let hotDealsContainer = document.getElementById('trending-deals-container');
+        let productsData = data.data;
+        let productHtml;
+        productsData.forEach((product, index) => {
+            productHtml = `<div class="split-1 banner-product-image trending-banner-image" id="trending-banner-image">
+                <a href="#" class="image-text-highlight zenbook-text" id="trending-banner-cta-text" style="background-color: #D9D9D6;width:30%"></a>
+            </div>
+            <div class="split-2">
+                <div class="product-card-2">
+                    <div class="trends-image-container">
+                        <div class="product-offer-text-trending">
+                            ${productsData[1].discount_upto}%</div>
+
+                        <img src="${productsData[1].product_images[0]}" alt="product-cabinet"
+                            class="hot-deals-product-image">
+
+                    </div>
+                    <div class="trends-content-container">
+                        <div class="product-title" style="padding-bottom: 8px;">${productsData[1].product_name}
+                        </div>
+                        <div class="product-description" style="padding-bottom: 8px;">${productsData[1].product_description.slice(0, 300).concat('...')}</div>
+                        <div class="price-container" style="padding-bottom: 8px;">
+                            <span class="offer-price">${formatPriceInINR(productsData[1].product_discounted_price)}*                            <span class="real-price">${formatPriceInINR(productsData[1].product_main_price)}</span>
+</span>
+                            <span class="saved-price">Save ${formatPriceInINR(productsData[1].product_offer_value)}</span>
+                        </div>
+                        <div class="left-aligned"><button class="buy-now-button" onclick="handleRoute('${productsData[1].buy_now_url}')">Buy
+                                Now</button></div>
+                    </div>
+                </div>
+                <div class="product-card-2">
+                    <div class="trends-image-container">
+                        <div class="product-offer-text-trending">
+                            ${productsData[2].discount_upto}%</div>
+
+                        <img src="${productsData[2].product_images[0]}" alt="product-cabinet"
+                            class="hot-deals-product-image">
+
+                    </div>
+                    <div class="trends-content-container">
+                        <div class="product-title" style="padding-bottom: 8px;">${productsData[2].product_name}
+                        </div>
+                        <div class="product-description" style="padding-bottom: 8px;">${productsData[2].product_description.slice(0, 300).concat('...')}</div>
+                        <div class="price-container" style="padding-bottom: 8px;">
+                            <span class="offer-price">${formatPriceInINR(productsData[2].product_discounted_price)}*                            <span class="real-price">${formatPriceInINR(productsData[2].product_main_price)}</span>
+</span>
+                            <span class="saved-price">Save ${formatPriceInINR(productsData[2].product_offer_value)}</span>
+                        </div>
+                        <div class="left-aligned"><button class="buy-now-button" onclick="handleRoute('${productsData[2].buy_now_url}')">Buy
+                                Now</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="split-3">
+            <div class="product-card-2">
+                  <div class="trends-image-container">
+                    <div class="product-offer-text-trending">
+                            ${productsData[3].discount_upto}%</div>
+
+                        <img src="${productsData[3].product_images[0]}" alt="product-cabinet"
+                            class="hot-deals-product-image">
+
+                    </div>
+                    <div class="trends-content-container">
+                        <div class="product-title" style="padding-bottom: 8px;">${productsData[3].product_name}
+                        </div>
+                        <div class="product-description" style="padding-bottom: 8px;">${productsData[3].product_description.slice(0, 300).concat('...')}</div>
+                        <div class="price-container" style="padding-bottom: 8px;">
+                            <span class="offer-price">${formatPriceInINR(productsData[3].product_discounted_price)}*                            <span class="real-price">${formatPriceInINR(productsData[3].product_main_price)}</span>
+</span>
+                            <span class="saved-price">Save ${formatPriceInINR(productsData[3].product_offer_value)}</span>
+                        </div>
+                        <div class="left-aligned"><button class="buy-now-button" onclick="handleRoute('${productsData[3].buy_now_url}')">Buy
+                                Now</button></div>
+                    </div>
+            </div>
+            <div class="product-card-2">
+                  <div class="trends-image-container">
+                    <div class="product-offer-text-trending">
+                            ${productsData[3].discount_upto}%</div>
+
+                        <img src="${productsData[3].product_images[0]}" alt="product-cabinet"
+                            class="hot-deals-product-image">
+
+                    </div>
+                    <div class="trends-content-container">
+                        <div class="product-title" style="padding-bottom: 8px;">${productsData[3].product_name}
+                        </div>
+                        <div class="product-description" style="padding-bottom: 8px;">${productsData[3].product_description.slice(0, 300).concat('...')}</div>
+                        <div class="price-container" style="padding-bottom: 8px;">
+                            <span class="offer-price">${formatPriceInINR(productsData[3].product_discounted_price)}* <span class="real-price">${formatPriceInINR(productsData[3].product_main_price)}</span>
+
+</span>
+                            <span class="saved-price">Save ${formatPriceInINR(productsData[3].product_offer_value)}</span>
+                        </div>
+                        <div class="left-aligned"><button class="buy-now-button" onclick="handleRoute('${productsData[3].buy_now_url}')">Buy
+                                Now</button></div>
+                    </div>
+            </div>
+        </div>`;
+
+        });
+
+        // Append the first child (the product card) to the main container
+        hotDealsContainer.innerHTML = productHtml;
+
+        loadTrendingBanner();
+
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+</script>

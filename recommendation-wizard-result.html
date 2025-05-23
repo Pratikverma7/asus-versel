@@ -1,0 +1,281 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <title>Recommendation</title>
+     <base href="https://asus.3mindsdigital.com"> 
+    <!--<base href="http://127.0.0.1:5500/">-->
+
+    <link rel="stylesheet" href="css/fonts/myriad-pro/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/recommendation.css">
+    <link rel="stylesheet" href="css/recommendation-result.css">
+    <link rel="stylesheet" href="css/fonts/tt-norms/stylesheet.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"> -->
+    <link rel="stylesheet" href="css/comparison.css" />
+  </head>
+
+  <body id="main-body" style="overflow-x: hidden !important; width: 100%;">
+    <div id="popup-message" class="popup">
+      <div class="popup-content">
+        <div>
+            <span class="close-btn" onclick="closePopup()"><img src="assets/images/closebutton.png"/></span>
+
+        </div>
+        <div  id="popup-content-text" class="product-title popup-content-text " style="color:white;text-align:center">
+            <p class="product-title popup-content-text " style="color:white;text-align:center">Hey,<br>
+              as per your details, there are no-recommended<br>
+              laptops at the moment !.</p>
+<div>
+    <img id="no-recommendation" src ="assets/images/recommendetion-no-result.png"/>
+
+</div>
+<div style="padding: 10px;">
+    <button class="buy-now-button" onclick="closePopup()" style="width:fit-content">
+        Browse Latest Collection
+    </button>
+    <button class="go-back-button" onclick="location.reload()" style="width:fit-content">
+     Go Back  
+  </button>
+</div>
+
+        </div>
+      </div>
+    </div>
+    <div id="header"></div>
+    <div id="header-top-component"></div>
+    <div id="homepage-banner-container">
+      <img
+        id="homepage-banner"
+        src="assets/images/recommendation-result-banner.png"
+        class="main-banner"
+      />
+      <div class="main-banner-text" id="result-container"></div>
+    </div>
+    <div class="container " id="top-deals-1">
+      <div class="top-section" style="display: flex;">
+        <div class="left-aligned mobile-alignment-fix">
+          <div class="as-title">Top Laptops Curated For You</div>
+        </div>
+        <!-- <div class="right-aligned mobile-alignment-fix">    
+                <div class="switch-field">
+                    <input type="radio" id="radio-one" name="switch-one" value="eshop" checked/>
+                    <label class="switch-label" for="radio-one">Best Deals</label>
+                    <input type="radio" id="radio-two" name="switch-one" value="exclusive" />
+                    <label class="switch-label" for="radio-two">Top Recommendations</label>
+                </div>
+            </div> -->
+      </div>
+      <div id="top-deals-products-tabs"></div>
+      <div
+        class="product-cards-container"
+        id="specs-product-cards-container"
+      ></div>
+    </div>
+    <div id="recommended-images-component"></div>
+    <div id="useful-component"></div>
+    <div id="exclusive-component"></div>
+    <div id="search-model-component"></div>
+    <div id="article-component"></div>
+    <div id="faq-component"></div>
+    <div id="elevate-component"></div>
+    <div id="footer"></div>
+  </body>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+  <script
+    defer
+    type="text/javascript"
+    src="https://asus.oriserve.com/chatbot/static/js/asusprod.js"
+  ></script>
+  <script src="js/common.js"></script>
+  <script src="js/header.js"></script>
+
+  <script>
+    // Load Components
+    const components = [
+      {
+        id: "header",
+        file: "layout/header.html",
+      },
+      {
+        id: "header-top-component",
+        file: "components/header-top.html",
+      },
+      {
+        id: "recommended-images-component",
+        file: "components/recommended-images.html",
+      },
+      {
+        id: "useful-component",
+        file: "components/useful.html",
+      },
+      {
+        id: "exclusive-component",
+        file: "components/exclusive.html",
+      },
+      {
+        id: "search-model-component",
+        file: "components/search-model.html",
+      },
+      {
+        id: "article-component",
+        file: "components/article.html",
+      },
+      {
+        id: "elevate-component",
+        file: "components/elevate.html",
+      },
+      {
+        id: "faq-component",
+        file: "components/faq.html",
+      },
+      {
+        id: "footer",
+        file: "layout/footer.html",
+      },
+    ];
+
+    components.forEach((component) => {
+      fetch(component.file)
+        .then((response) => response.text())
+        .then((data) => {
+          const componentElement = document.getElementById(component.id);
+          componentElement.innerHTML = data;
+
+          const scripts = componentElement.getElementsByTagName("script");
+          for (let i = 0; i < scripts.length; i++) {
+            eval(scripts[i].innerText);
+          }
+        });
+    });
+
+    function closePopup() {
+      document.getElementById("popup-message").style.display = "none";
+    }
+
+    // Function to handle image source change
+    function handleViewportResize(entries) {
+      entries.forEach((entry) => {
+        if (entry.contentRect.width < 821) {
+          document.getElementById("homepage-banner").src =
+            "assets/images/banners/Recomendation - Banner - Mobile.png";
+        } else {
+          document.getElementById("homepage-banner").src =
+            "assets/images/banners/Recomendation - Banner - Desktop.png";
+        }
+        let cards = document.querySelectorAll(".product-cards-container");
+      });
+    }
+
+    // Create a new Resize Observer
+    const resizeObserver = new ResizeObserver((entries) => {
+      handleViewportResize(entries);
+    });
+
+    // Observe the image element
+    resizeObserver.observe(document.getElementById("main-body"));
+
+    const url = new URL(window.location.href);
+    const recommendationResult = url.searchParams.get("recommendation-result");
+console.log(recommendationResult,"recomm result")
+    if (recommendationResult) {
+      fetch(`${baseUrl}/recommendation-result/${recommendationResult}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data, "result");
+          const container = document.getElementById(
+            "specs-product-cards-container"
+          );
+          const container2 = document.getElementById("result-container");
+          container.innerHTML = "";
+          container2.innerHTML = `Hey ${data?.data?.name},<br>
+as per your details, here are the<br>
+recommended specifications.`;
+          const products = JSON.parse(data.data.result);
+          if (products.length > 0) {
+            products.forEach((product) => {
+              if (screenWidth > 820) {
+                desktopProductCard(product, container, false, true);
+              } else {
+                mobileProductCard(product, container, false, true);
+              }
+            });
+          } else {
+            //             container2.innerHTML = `Hey ${data?.data?.name},<br>
+            // as per your details, here are the<br>
+            // recommended specifications.`;
+            container2.style.display = "none";
+            document.getElementById("homepage-banner-container").style.display =
+              "none";
+            // Show popup
+            if (screenWidth > 820) {
+                document.getElementById("top-deals-1").style.paddingTop="145px"
+
+
+            }else{
+                document.getElementById("top-deals-1").style.paddingTop="200px"
+
+            }
+            document.getElementById("popup-message").style.display = "block";
+            const containerPopup = document.getElementById("popup-content-text")
+            containerPopup.innerHTML =  `Hey ${data?.data?.name},<br>
+as per your details, there are no-recommended<br>
+laptops at the moment !.`;
+          
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching series data:", error);
+        });
+    }else{
+      const container2 = document.getElementById("result-container");
+
+      container2.style.display = "none";
+            document.getElementById("homepage-banner-container").style.display =
+              "none";
+            // Show popup
+            if (screenWidth > 820) {
+                document.getElementById("top-deals-1").style.paddingTop="145px"
+
+
+            }else{
+                document.getElementById("top-deals-1").style.paddingTop="200px"
+
+
+            }
+            document.getElementById("popup-message").style.display = "block";
+           
+          
+          
+    }
+
+    // swiper code
+    var swiper = new Swiper(".swiper-container", {
+      slidesPerView: 1, // Show one slide at a time
+      spaceBetween: 0, // No space between slides
+      loop: true, // Enable loop mode
+      autoplay: {
+        delay: 3000, // Autoplay delay in milliseconds
+        disableOnInteraction: false, // Keep autoplay running even when user interacts with the slider
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  </script>
+</html>

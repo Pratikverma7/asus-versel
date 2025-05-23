@@ -1,0 +1,466 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Recommendation</title>
+     <base href="https://asus.3mindsdigital.com"> 
+    <!--<base href="http://127.0.0.1:5500/">-->
+
+    <link rel="stylesheet" href="css/fonts/myriad-pro/style.css">
+    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/recommendation.css">
+    <link rel="stylesheet" href="css/fonts/tt-norms/stylesheet.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+    <link rel="stylesheet" href="css/wizard.css">
+    
+</head>
+
+
+<body id="main-body" style="overflow-x:hidden !important;width:100%;">
+    <div id="header"></div>
+    <div id="header-top-component"></div>
+    <div class="wizard-container d-none" id="recommendation-wizard-section">
+        <div class="progress">
+            <div class="progress-bar" style="width: 10%;"><div class="progress-text">10%</div></div>
+        </div>
+        <div class="step-1">
+            <div class="wizard-content-wrapper">
+                <div class="wizard-title"  id="question-1"></div>
+                <div class="wizard-pills" id="question-1-option"></div>
+                <div class="wizard-buttons-container">
+                    <div class="step-next disabled" onclick="switchNextStep(1)">Next</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-2" style="display: none;">
+            <div class="wizard-content-wrapper">
+                <div class="wizard-title"  id="question-2"></div>
+                <div class="wizard-pills" id="question-2-option"></div>
+                <div class="wizard-buttons-container">
+                    <div class="step-back" onclick="switchPreviousStep(2)">Back</div>
+                    <div class="step-next" onclick="switchNextStep(2)">Next</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-3" style="display: none;">
+            <div class="wizard-content-wrapper">
+
+                <div class="wizard-title" id="question-3"></div>
+                <div class="wizard-pills">
+
+                    <div style="padding-top: 10px;">
+                        <div>
+                            <div style="padding-top: 10px;">
+                                <img src="assets/images/price-range.svg" class="range-class">
+                            </div>
+                            <div class="range-slider">
+                                <div class="range-slider-group">
+                                    <input id="question-3-from-slider" type="range" step="1000" />
+                                    <input id="question-3-to-slider" type="range" step="1000" />
+                                </div>
+
+                                <div class="price-container" style="order:2">
+                                    <div class="price-sub-container"> 
+                                        <input id="question-3-from-input" disabled="true" type="number" />
+                                    </div>
+                                    <div style="color: white;">to</div>
+                                    <div class="price-sub-container">
+                                        <input id="question-3-to-input" type="number" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-buttons-container">
+                    <div class="step-back" onclick="switchPreviousStep(3)">Back</div>
+                    <div class="step-next" onclick="switchNextStep(3)">Next</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-4" style="display: none;">
+            <form class="wizard-content-wrapper" id="recommendation-form" action="javascript:void(0);">
+                <div class="wizard-title">Great, Please fill in your details for us to get in touch with you.</div>
+                <div class="wizard-pills">
+                    <input id="firstname-wizard" type="text" name="name" placeholder="Full Name*" class="wizard-input" required>
+                    <input type="email" name="email" placeholder="Email Address*" class="wizard-input" required>
+                    <input type="text" name="mobile_number" id="mobile_number" placeholder="Phone*"required pattern="[0-9]{10}" class="wizard-input" oninput="this.value = this.value.replace(/[^0-9]/g, '');" minLength="10" maxLength="10" required />
+                    <input type="text" name="pincode" placeholder="Pincode*" class="wizard-input" minLength="6" maxLength="6" required>
+                    <div class="input-group">
+                        <span>
+                            <input name="agree_terms" type="checkbox" required/>
+                        </span>
+                        <span class="terms-conditions">I’ve read and accept the <b>Terms & Conditions</b>.</span>
+                    </div>
+                </div>
+    
+                <div class="wizard-buttons-container">
+                    <div class="step-back" onclick="switchPreviousStep(4)">Back</div>
+                    <div class="step-next" onclick="switchNextStep(4)">Submit</div>
+                </div>
+            </form>
+        </div>
+        <div class="step-5" style="display: none">
+            <div class="wizard-loader-content-wrapper">
+                <div class="wizard-loader-title">We are evaluating the ideal laptops to meet your specific needs and
+                    requirements.</div>
+                    <div class="loader-container">
+                        <img src="assets/images/loader.svg" alt="loader" class="loader">
+                    </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput-jquery.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/header.js"></script>
+
+<script>
+    let steps = {
+        '1' : '10',
+        '2' : '30',
+        '3' : '50',
+        '4' : '70',
+        '5' : '100'
+    };
+    function closePopup() {
+      document.getElementById("popup-message").style.display = "none";
+    }
+    let progressBar = document.querySelector('.progress-bar');
+    let nextButtons = document.querySelectorAll('.step-next');
+
+    let questions = [];
+    let firstQuestionAnswer = "";
+    let secondQuestionAnswer = "";
+    let thirdQuestionAnswer = "";
+    
+    let secondQuestionOptions = [];
+
+    let firstOptionsContainer = document.getElementById('question-1-option');
+    let secondOptionsContainer = document.getElementById('question-2-option'); 
+    let thirsOptionsContainer = document.getElementById('question-2-option'); 
+
+    let recommendationForm = document.getElementById('recommendation-form');
+
+    // Load Components
+    const components = [
+        {
+            id: 'header',
+            file: 'layout/header.html',
+        },
+        {
+            id: 'header-top-component',
+            file: 'components/header-top.html',
+        }
+    ];
+
+    components.forEach(component => {
+        fetch(component.file).then(response => response.text())
+        .then(data => {
+            const componentElement = document.getElementById(component.id);
+            componentElement.innerHTML = data;
+
+            const scripts = componentElement.getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                eval(scripts[i].innerText);
+            }
+        });
+    });
+
+    fetch(`${baseUrl}/recommendation-questions`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {  
+        let recommendationWizardSection = document.getElementById('recommendation-wizard-section');
+        if(data.data.length > 0)
+        {
+            recommendationWizardSection.classList.remove('d-none');
+            questions = data.data;
+            data.data.forEach((question, index) => {   
+                if(index === 0)
+                {
+                    document.getElementById('question-1').innerHTML = question.question;       
+                    question.options.forEach(option => {
+                        firstOptionsContainer.insertAdjacentHTML('beforeend',`<div class="wizard-pill pill-text" onclick="selectFirstQuestionChoice(event)">
+                            <span><img src="${option.image}" alt="Recommendation Question"></span>
+                            <span class="pill-text">${option.text}</span>
+                        </div>`);
+                    });
+                } 
+                else if(index === 1)
+                {
+                    document.getElementById('question-2').innerHTML = question.question;
+                    secondQuestionOptions = question.options;                   
+                }
+                else if(index === 2)
+                {
+                    document.getElementById('question-3').innerHTML = question.question;
+
+                    document.getElementById('question-3-from-slider').setAttribute('min', question.options.from);
+                    document.getElementById('question-3-from-slider').setAttribute('max', question.options.to);
+                    document.getElementById('question-3-from-slider').setAttribute('value', question.options.from);
+                    document.getElementById('question-3-to-slider').setAttribute('min', question.options.from);
+                    document.getElementById('question-3-to-slider').setAttribute('max', question.options.to);
+                    document.getElementById('question-3-to-slider').setAttribute('value', question.options.to);
+                    document.getElementById('question-3-from-input').setAttribute('min', question.options.from);
+                    document.getElementById('question-3-from-input').setAttribute('max', question.options.to);
+                    document.getElementById('question-3-from-input').setAttribute('value', question.options.from);
+                    document.getElementById('question-3-to-input').setAttribute('min', question.options.from);
+                    document.getElementById('question-3-to-input').setAttribute('max', question.options.to);
+                    document.getElementById('question-3-to-input').setAttribute('value', question.options.to);
+                }
+            });
+        }          
+    });
+
+    function selectFirstQuestionChoice(event) {
+        // Remove active class from all pills
+        let pills = document.querySelectorAll('.wizard-pill');
+        pills.forEach(pill => {
+            pill.classList.remove('active');
+        });
+
+        // Add active class to the clicked pill        
+        let clickedPill = event.currentTarget;
+        firstQuestionAnswer = clickedPill.querySelectorAll('.pill-text')[0].innerHTML;
+        
+        secondOptionsContainer.innerHTML = '';
+        secondQuestionOptions[firstQuestionAnswer]?.split(',').forEach(option => {
+            secondOptionsContainer.insertAdjacentHTML('beforeend',`<div class="wizard-pill pill-text second-question-choice" onclick="selectSecondQuestionChoice(event)">${option}</div>`);
+        });
+        clickedPill.classList.add('active');
+        progressBar.style.width = '20%';
+        progressBar.innerHTML = '<div class="progress-text">20%</div>';
+        
+        nextButtons.forEach(button => {
+            button.classList.remove('disabled');
+        });
+    }
+    
+    function selectSecondQuestionChoice(event) {    
+        let clickedPill = event.currentTarget;
+        if (clickedPill.classList.contains('active')) {
+            clickedPill.classList.remove('active');
+            let answerArray = secondQuestionAnswer.split(',');
+            secondQuestionAnswer = answerArray.filter(answer => answer.trim() !== clickedPill.innerHTML.trim()).join(',');
+        }
+        else
+        {
+            clickedPill.classList.add('active');
+            secondQuestionAnswer = secondQuestionAnswer+","+clickedPill.innerHTML;
+        }
+        progressBar.style.width = '40%';
+        progressBar.innerHTML = '<div class="progress-text">40%</div>';
+
+        // Check if any pill has the 'active' class
+        let pills = document.querySelectorAll('.second-question-choice');
+        let hasActive = Array.from(pills).some(pill => pill.classList.contains('active'));
+        if (hasActive) {
+            nextButtons.forEach(button => {
+                button.classList.remove('disabled');
+            });
+        }
+        else
+        {
+            nextButtons.forEach(button => {
+                button.classList.add('disabled');
+            });
+        }
+    }
+
+    function switchPreviousStep(currect_step = 1)
+    {
+        let width = steps[currect_step-1];
+        // Current Step 
+        document.querySelector(`.step-${currect_step}`).style.display = 'none';
+        // Previous Step
+        document.querySelector(`.step-${currect_step-1}`).style.display = 'block';
+
+        progressBar.style.width = width+'%';
+        progressBar.innerHTML = `<div class="progress-text">${width}%</div>`;
+    }
+    
+    function switchNextStep(currect_step = 1)
+    {
+        const stepNextDiv = document.querySelector('.step-next');
+        if (stepNextDiv.classList.contains('disabled')) {
+            return;
+        }
+        
+        if(currect_step == 1)
+        {
+            nextButtons.forEach(button => {
+                button.classList.add('disabled');
+            });   
+        }
+        else if(currect_step === 3)
+        {
+            let from =  document.getElementById('question-3-from-slider').value;
+            let to =  document.getElementById('question-3-to-slider').value;
+            thirdQuestionAnswer =   from+'-'+to;            
+        }
+        else if(currect_step === 4)
+        {
+            
+            if (recommendationForm.checkValidity()) {  
+                const event = new Event('submit', { bubbles: true, cancelable: true });
+                recommendationForm.dispatchEvent(event);           
+            }
+            else
+            {
+                recommendationForm.reportValidity();
+                return false;
+            }
+        }
+        
+        let width = steps[currect_step+1];
+        // Current Step 
+        document.querySelector(`.step-${currect_step}`).style.display = 'none';
+        // Next Step
+        document.querySelector(`.step-${currect_step+1}`).style.display = 'block';
+
+        progressBar.style.width = width+'%';
+        progressBar.innerHTML = `<div class="progress-text">${width}%</div>`;
+    }
+
+    recommendationForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        let formData = $('#recommendation-form').serializeArray();
+
+        let questionAnswers = [];
+
+        questions.forEach((question, index) => {
+            
+            let answerObject = {
+                'type': question.type,
+                'question': question.question,
+                'options': question.options,
+            };
+
+            if (index === 0) {
+                answerObject['answer'] = firstQuestionAnswer;
+            } else if (index === 1) {
+                answerObject['answer'] = secondQuestionAnswer;
+            } else if (index === 2) {
+                answerObject['answer'] = thirdQuestionAnswer;
+            }
+
+            questionAnswers.push(answerObject);
+        });
+
+        formData.push({ name: 'question_answers', value: JSON.stringify(questionAnswers) });
+        
+        $.ajax({
+            url: `${baseUrl}/recommendation-result`,
+            type: 'POST',
+            data: $.param(formData),
+            success: (response) => {                               
+                setTimeout(()=>{
+                    // window.location.href = response.data.redirect_url;
+                    loadResult(response.data.redirect_url);
+                },3000)
+            },
+            error: (error) => {
+                switchPreviousStep(5)
+            }
+        });
+    });
+    function validateMobile() {
+    let mobileInput = document.getElementById("mobile_number").value;
+    let mobilePattern = /^[6-9]\d{9}$/; // Ensures it starts with 6-9 and has 10 digits
+
+    if (!mobilePattern.test(mobileInput)) {
+        alert("Please enter a valid 10-digit mobile number.");
+        return false;
+    }
+    alert("Mobile number is valid!");
+    return true;
+}
+    function loadResult(redirect_url) {
+        const urlParams = new URLSearchParams(new URL(redirect_url).search);
+        const recommendationResult = urlParams.get('recommendation-result');
+
+        $.ajax({
+            url: redirect_url,
+            type: 'GET',
+            success: (htmlContent) => {
+                document.documentElement.innerHTML = htmlContent.replace(`url.searchParams.get('recommendation-result')`, recommendationResult);
+                const scripts = document.body.querySelectorAll('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    eval(scripts[i].innerText);
+                }
+            },
+            error: (error) => {
+                console.error('Failed to fetch the redirect URL content:', error);
+            }
+        });
+    }
+
+    (function () {
+
+        var parent = document.querySelector(".range-slider");
+        if (!parent) return;
+
+        var
+            rangeS = parent.querySelectorAll("input[type=range]"),
+            numberS = parent.querySelectorAll("input[type=number]");
+
+        rangeS.forEach(function (el) {
+            el.oninput = function () {
+                var slide1 = parseFloat(rangeS[0].value),
+                    slide2 = parseFloat(rangeS[1].value);
+
+                if (slide1 > slide2) {
+                    [slide1, slide2] = [slide2, slide1];
+                    // var tmp = slide2;
+                    // slide2 = slide1;
+                    // slide1 = tmp;
+                }
+
+                numberS[0].value = slide1;
+                numberS[1].value = slide2;
+            }
+        });
+
+        numberS.forEach(function (el) {
+            el.oninput = function () {
+                var number1 = parseFloat(numberS[0].value),
+                    number2 = parseFloat(numberS[1].value);
+
+                if (number1 > number2) {
+                    var tmp = number1;
+                    numberS[0].value = number2;
+                    numberS[1].value = tmp;
+                }
+
+                rangeS[0].value = number1;
+                rangeS[1].value = number2;
+
+            }
+        });
+
+    })();
+
+    // -----Country Code Selection
+    $("#mobile_number").intlTelInput({
+        initialCountry: "in",
+        separateDialCode: true
+    });
+
+</script>
+
+
+</html>

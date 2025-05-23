@@ -1,0 +1,130 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <title>Recommendation</title>
+     <base href="https://asus.3mindsdigital.com"> 
+
+    <!--<base href="http://127.0.0.1:5500/">-->
+    <link rel="stylesheet" href="css/fonts/myriad-pro/style.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/homepage.css" />
+    <link rel="stylesheet" href="css/comparison.css" />
+
+    <link rel="stylesheet" href="css/fonts/tt-norms/stylesheet.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css"
+    />
+    <link rel="stylesheet" href="css/recommendation.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  </head>
+
+  <body id="main-body" style="overflow-x: hidden !important; width: 100%;">
+    <div id="header"></div>
+    <div id="header-top-component"></div>
+    <div id="recommendation-banners-component"></div>
+    <div id="recommended-images-component"></div>
+    <div id="trending-laptops-component"></div>
+    <div id="useful-component"></div>
+    <div id="exclusive-component"></div>
+    <!-- <div id="search-model-component"></div> -->
+    <div id="article-component"></div>
+    <div id="faq-component"></div>
+    <div id="elevate-component"></div>
+    <div id="footer"></div>
+  </body>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+  <script
+    defer
+    type="text/javascript"
+    src="https://asus.oriserve.com/chatbot/static/js/asusprod.js"
+  ></script>
+  <script src="js/common.js"></script>
+  <script src="js/header.js"></script>
+
+  <script>
+    // Load Components
+    const components = [
+      {
+        id: "header",
+        file: "layout/header.html",
+      },
+      {
+        id: "header-top-component",
+        file: "components/header-top.html",
+      },
+      {
+        id: "recommendation-banners-component",
+        file: "components/recommendation-banners.html",
+      },
+      {
+        id: "recommended-images-component",
+        file: "components/recommended-images.html",
+      },
+      {
+        id: "trending-laptops-component",
+        file: "components/trending-laptops.html",
+      },
+      {
+        id: "useful-component",
+        file: "components/useful.html",
+      },
+      {
+        id: "exclusive-component",
+        file: "components/exclusive.html",
+      },
+      // {
+      //   id: "search-model-component",
+      //   file: "components/search-model.html",
+      // },
+      {
+        id: "article-component",
+        file: "components/article.html",
+      },
+      {
+        id: "elevate-component",
+        file: "components/elevate.html",
+      },
+      {
+        id: "faq-component",
+        file: "components/faq.html",
+      },
+      {
+        id: "footer",
+        file: "layout/footer.html",
+      },
+    ];
+
+    components.forEach((component) => {
+      fetch(component.file)
+        .then((response) => response.text())
+        .then((data) => {
+          const componentElement = document.getElementById(component.id);
+          componentElement.innerHTML = data;
+
+          const scripts = componentElement.getElementsByTagName("script");
+          for (let i = 0; i < scripts.length; i++) {
+            eval(scripts[i].innerText);
+          }
+        });
+    });
+  </script>
+</html>

@@ -1,0 +1,796 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Listing Page</title>
+     <base href="https://asus.3mindsdigital.com"> 
+    <!--<base href="http://127.0.0.1:5500/">-->
+
+    <link rel="stylesheet" href="css/fonts/myriad-pro/style.css">
+    <link rel="stylesheet" href="css/fonts/tt-norms/stylesheet.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/rog-landing.css">
+    <link rel="stylesheet" href="css/rog-landing-2.css">
+    <link rel="stylesheet" href="css/rog-listing.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+</head>
+
+<body id="main-body" style="overflow-x:hidden !important;width:100%;" class="rog">
+    <div id="header"></div>
+    <div id="rog-header-top-component"></div>
+    <div class="container main-listing-container">
+        <div class="sidebar-container" id="sidebar-container"></div>
+        <div class="listing-container">
+            <div class="container search-filter-container">
+                <div class="sort-tab-container">
+                    <div class="sort-tab" onclick="handleSortClick()">
+                        <span class="sort-icon">
+                            <img src="assets/images/sort-icon.svg" alt="sort">
+                        </span>
+                        <span class="sort-text">Sort By</span>
+                        <span>
+                            <img src="assets/images/sort-down.svg" alt="down-arrow" class="down-arrow">
+                        </span>
+                    </div>
+                    <div class="sort-tab" onclick="handleFilterClick()">
+                        <span class="filter-icon">
+                            <img src="assets/images/filter-icon.svg" alt="filter">
+                        </span>
+                        <span class="sort-text">Filter</span>
+                        <span>
+                            <img src="assets/images/sort-down.svg" alt="down-arrow" class="down-arrow">
+                        </span>
+                    </div>
+                </div>
+                <div class="sort-by-mobile-container" id="sort-by-mobile-container" style="display: none;">
+                    <ul class="sort-list-container">
+                        <li class="sort-title active-sort" onclick="handleSortSelection(this)" data-value="price_desc"><span><img
+                                    src="assets/images/sort-check.svg" alt="check"></span><span
+                                style="padding-left: 30px;">Price High to Low</span> </li>
+                        <li class="sort-title" onclick="handleSortSelection(this)" data-value="price_asc"><span><img
+                                    src="assets/images/sort-check.svg" alt="check" style="display: none;"></span><span
+                                style="padding-left: 30px;">Price Low to High</span></li>
+                    </ul>
+                </div>
+                <div class="filter-by-mobile-container w-100" id="filter-by-mobile-container" style="display: none;">
+                    <div id="filter-container"></div>
+                </div>
+                <div class="results-container w-100">
+                    <div class="result">0 Results</div>
+                    <div class="query-pills-container" id="query-pills-container">
+                    </div>
+
+                </div>
+                <div class="filter-container">
+                    <span>Sort By :</span>
+                    <select id="sortOptions" class="select-tag">
+                        <option value="price_desc" style="font-weight: 700;">Price High to Low</option>
+                        <option value="price_asc">Price Low to High</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="product-cards-container" id="product-cards-container"></div>                       
+                <div id="rog-compare-product-component"></div>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+    <div id="compare-model-component"></div>
+</body>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js
+"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script defer type="text/javascript" src="https://asus.oriserve.com/chatbot/static/js/asusprod.js"></script>
+<script src="js/common.js"></script>
+<script src="js/rog-header.js"></script>
+
+<script>
+    // Load Components
+    const components = [
+        {
+            id: 'header',
+            file: 'layout/rog-header.html',
+        },
+        {
+            id: 'rog-header-top-component',
+            file: 'components/rog-header-top.html',
+        },
+        {
+            id: 'rog-compare-product-component',
+            file: 'components/rog-compare-product.html',
+        },
+        {
+            id: 'footer',
+            file: 'layout/rog-footer.html'
+        },
+        {
+            id: 'compare-model-component',
+            file: 'components/compare-model.html'
+        }
+    ];
+
+    components.forEach(component => {
+        fetch(component.file).then(response => response.text())
+        .then(data => {
+            const componentElement = document.getElementById(component.id);
+            componentElement.innerHTML = data;
+
+            const scripts = componentElement.getElementsByTagName('script');
+            for (let i = 0; i < scripts.length; i++) {
+                eval(scripts[i].innerText);
+            }
+        });
+    });
+
+    // swiper code
+    function callSwiperCode() {
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1, // Show one slide at a time
+            spaceBetween: 0, // No space between slides
+            loop: true, // Enable loop mode
+            autoplay: {
+                delay: 3000, // Autoplay delay in milliseconds
+                disableOnInteraction: false, // Keep autoplay running even when user interacts with the slider
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    }
+
+
+
+    let resultLength;
+    let sortBy = 'price_desc';
+    let selectedSeriesName;
+    // Arrays to store selected checkbox values
+    let selectedSeries = [];
+    let selectedChildSeries = [];
+    let selectedCategories = [];
+    let selectedUsage = [];
+    let selectedProcessor = [];
+    let selectedRAM = [];
+    let selectedOS = [];
+    let selectedStorage = [];
+    let selectedGraphic = [];
+    let selectedScreen = [];
+    let selectedDisplay = [];
+    let selectedTouchScreen = [];
+    let selectedDiscount = '';
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let url = new URL(window.location.href);
+        let queryString = window.location.search.substring(1);
+
+        if (queryString.includes('series')) {
+            selectedSeries.push(url.searchParams.get('series'));
+        }
+        
+        if (queryString.includes('category')) {
+            selectedCategories.push(url.searchParams.get('category'));
+        }
+
+        if(queryString.includes('price_range')){
+            priceRange = url.searchParams.get('price_range');
+        }
+
+
+        // Function to fetch filter options
+        function fetchFilterOptions() {
+            fetch(`${baseUrl}/filter-options?is_rog=1`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const filterData = data.data;
+                renderSidebar(filterData);
+                applyFilters();
+            })
+            .catch(error => {
+                console.error('Error fetching filter options:', error);
+            });
+        }
+     
+        // Function to render sidebar with filter options
+        function renderSidebar(filterData) {
+            const sidebarContainer = document.getElementById('sidebar-container');
+            const filterContainer = document.getElementById("filter-container");
+
+            sidebarContainer.innerHTML = filterContainer.innerHTML = `
+                <div class="sidebar-main">
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Series</div>
+                        <div class="boxaccordion">
+                            <div class="containerwidth">
+                                ${filterData.series.map((series, index) => `
+                                    <div class="wrapper">
+                                        <button class="toggle" onclick="handleToggle('${index}')">
+                                            <div>
+                                                <input type="checkbox" id="series_${series.id}" name="series" value="${series.id}" onchange="handleCheckboxChange(this)" ${selectedSeries.includes(series.id.toString()) ? 'checked' : ''}>
+                                                <label for="series_${series.id}">${series.name}</label>
+                                            </div>
+                                            ${series.child_series.length > 0 ? `<div><i class="fas fa-plus icon"></i></div>` : ``}
+                                        </button>
+                                        <div class="content">
+                                            <ul>
+                                                ${series.child_series.map((child, index) => `
+                                                    <li>
+                                                        <input type="checkbox" id="child_${child.id}" name="child_series" value="${child.id}" onchange="handleCheckboxChange(this)">
+                                                        <label style="color: white;" for="child_${child.id}">${child.name}</label>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Category</div>
+                        <div class="series-small-text">
+                            ${filterData.categories.map((category, index) => `
+                                <div>
+                                    <input type="checkbox" id="category_${category.id}" name="categories" value="${category.id}" onchange="handleCheckboxChange(this)" ${selectedCategories.includes(category.id.toString()) ? 'checked' : ''}>
+                                    <label for="category_${category.id}">${category.name}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Usage</div>
+                        <div class="series-small-text">
+                            ${filterData.usages.map((usage, index) => `
+                                <div>
+                                    <input type="checkbox" id="usage_${usage.id}" name="usage" value="${usage.id}" onchange="handleCheckboxChange(this)">
+                                    <label for="usage_${usage.id}">${usage.name}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Processor</div>
+                        <div class="series-small-text">
+                            ${filterData.processors.map((processor, index) => `
+                                <div>
+                                    <input type="checkbox" id="processor_${processor.id}" name="processor" value="${processor.id}" onchange="handleCheckboxChange(this)">
+                                    <label for="processor_${processor.id}">${processor.name}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">RAM</div>
+                        <div class="series-small-text">
+                            ${filterData.rams.map((ram, index) => `
+                                <div>
+                                    <input type="checkbox" id="ram_${ram.id}" name="ram" value="${ram.id}" onchange="handleCheckboxChange(this)">
+                                    <label for="ram_${ram.id}">${ram.capacity} ${ram.speed ?? ''}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Operating System</div>
+                        <div class="series-small-text">
+                            ${filterData.operating_systems.map((os, index) => `
+                                <div>
+                                    <input type="checkbox" id="os_${os.id}" name="os" value="${os.id}" onchange="handleCheckboxChange(this)">
+                                    <label for="os_${os.id}">${os.name}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Storage</div>
+                        <div class="series-small-text">
+                            ${filterData.storage.map((storage, index) => `
+                                <div>
+                                    <input type="checkbox" id="storage_${storage.id}" name="storage" value="${storage.id}" onchange="handleCheckboxChange(this)">
+                                    <label for="storage_${storage.id}">${storage.capacity} ${storage.type}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Graphics</div>
+                        <div class="series-small-text">
+                            ${filterData.graphics.map((graphic, index) => `
+                                <div>
+                                    <input type="checkbox" id="graphic_${graphic.id}" name="graphic" value="${graphic.id}" onchange="handleCheckboxChange(this)">
+                                    <label for="graphic_${graphic.id}">${graphic.name}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Screen Size</div>
+                        <div class="series-small-text">
+                            ${filterData.screen_sizes.map((screen, index) => `
+                                <div>
+                                    <input type="checkbox" id="screen_${screen.id}" name="screen" value="${screen.id}" onchange="handleCheckboxChange(this)">
+                                    <label for="screen_${screen.id}">${screen.size}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Display Type</div>
+                        <div class="series-small-text">
+                            ${filterData.displays.map((display, index) => `
+                                <div>
+                                    <input type="checkbox" id="display_${display.id}" name="display" value="${display.id}" onchange="handleCheckboxChange(this)">
+                                    <label for="display_${display.id}">${display.type}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Touch Screen</div>
+                        <div class="series-small-text">
+                            <div>
+                                <input type="checkbox" id="touch_screen_1" name="touch_screen" value="1" onchange="handleCheckboxChange(this)">
+                                <label for="touch_screen_1">Yes</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="touch_screen_2" name="touch_screen" value="0" onchange="handleCheckboxChange(this)">
+                                <label for="touch_screen_2">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <div class="series-big-text">Price Range</div>
+                        <div>
+                            <div style="padding-top: 10px;">
+                                <img src="assets/images/price-range.svg" class="range-class">
+                            </div>
+                            <div class="range-slider">
+                                <div style="order: 1;">
+                                    <input value="30000" min="30000" max="500000" step="1000" type="range" onchange="syncRangeToNumber()" />
+                                    <input value="500000" min="30000" max="500000" step="1000" type="range" onchange="syncRangeToNumber()" />
+                                </div>
+
+                                <div class="price-container" style="order:2">
+                                    <div class="price-sub-container">
+                                        <input type="number" value="30000" min="30000" max="500000" onchange="syncNumberToRange()" />
+                                    </div>
+                                    <div>to</div>
+                                    <div class="price-sub-container">
+                                        <input type="number" value="500000" min="30000" max="500000" onchange="syncNumberToRange()" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding-top: 10px;">
+                                <div class="series-big-text">Discount</div>
+                                <div class="discount-container">
+                                    <div class="discount-sub-container">Up to 20%</div>
+                                    <div class="discount-sub-container">20%-40%</div>
+                                    <div class="discount-sub-container">40% & above</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+
+            const discountContainers = document.querySelectorAll('.discount-sub-container');               
+            discountContainers.forEach(container => {
+                container.addEventListener('click', function() {
+                    discountContainers.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedDiscount = this.innerHTML.trim();
+                });
+            });
+        }
+
+        // Initial fetch to load data
+        fetchFilterOptions();
+    });
+  let priceFrom = 30000;
+  let priceTo = 500000;
+    // Function to synchronize values from range inputs to number inputs
+  function syncRangeToNumber() {
+    var rangeInputs = document.querySelectorAll(".range-slider input[type=range]");
+    var numberInputs = document.querySelectorAll(".range-slider input[type=number]");
+
+    if (rangeInputs.length !== 2 || numberInputs.length !== 2) return;
+
+    var range1Value = parseFloat(rangeInputs[0].value);
+    var range2Value = parseFloat(rangeInputs[1].value);
+
+    // Swap values if range1Value is greater than range2Value
+    if (range1Value > range2Value) {
+      [range1Value, range2Value] = [range2Value, range1Value];
+    }
+
+    // Update the number inputs
+    numberInputs[0].value = range1Value;
+    numberInputs[1].value = range2Value;
+    priceFrom = range1Value;
+    priceTo = range2Value;
+  }
+
+  // Function to synchronize values from number inputs to range inputs
+  function syncNumberToRange() {
+    var rangeInputs = document.querySelectorAll(".range-slider input[type=range]");
+    var numberInputs = document.querySelectorAll(".range-slider input[type=number]");
+
+    if (rangeInputs.length !== 2 || numberInputs.length !== 2) return;
+
+    var number1Value = parseFloat(numberInputs[0].value);
+    var number2Value = parseFloat(numberInputs[1].value);
+
+    // Swap values if number1Value is greater than number2Value
+    if (number1Value > number2Value) {
+      [number1Value, number2Value] = [number2Value, number1Value];
+    }
+
+    // Update the range inputs
+    rangeInputs[0].value = number1Value;
+    rangeInputs[1].value = number2Value;
+  }
+
+  // Initialize the number inputs with the range inputs' values
+  document.addEventListener('DOMContentLoaded', function() {
+    syncRangeToNumber();
+  });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Get the dropdown element
+    const sortOptions = document.getElementById('sortOptions');
+
+    // Add event listener for changes
+    sortOptions.addEventListener('change', function() {
+        sortBy = this.value;
+        applyFilters();
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the parent container
+  var parent = document.querySelector(".range-slider");
+  if (!parent) {
+    return; // Exit if parent container is not found
+  }
+
+  // Select range and number inputs
+  var rangeInputs = parent.querySelectorAll("input[type=range]");
+  var numberInputs = parent.querySelectorAll("input[type=number]");
+
+  // Check if the correct number of inputs are found
+  if (rangeInputs.length !== 2 || numberInputs.length !== 2) {
+    return;
+  }
+
+  // Function to synchronize values from range inputs to number inputs
+  function syncRangeToNumber() {
+    var range1Value = parseFloat(rangeInputs[0].value);
+    var range2Value = parseFloat(rangeInputs[1].value);
+
+    // Swap values if range1Value is greater than range2Value
+    if (range1Value > range2Value) {
+      [range1Value, range2Value] = [range2Value, range1Value];
+    }
+
+    // Update the number inputs
+    numberInputs[0].value = range1Value;
+    numberInputs[1].value = range2Value;
+  }
+
+  // Function to synchronize values from number inputs to range inputs
+  function syncNumberToRange() {
+    var number1Value = parseFloat(numberInputs[0].value);
+    var number2Value = parseFloat(numberInputs[1].value);
+
+    // Swap values if number1Value is greater than number2Value
+    if (number1Value > number2Value) {
+      [number1Value, number2Value] = [number2Value, number1Value];
+    }
+
+    // Update the range inputs
+    rangeInputs[0].value = number1Value;
+    rangeInputs[1].value = number2Value;
+  }
+
+  // Attach onchange event listeners to range inputs
+  rangeInputs.forEach(function(input) {
+    input.addEventListener('change', syncRangeToNumber);
+  });
+
+  // Attach input event listeners to number inputs
+  numberInputs.forEach(function(input) {
+    input.addEventListener('input', syncNumberToRange);
+  });
+
+  // Initialize the number inputs with the range inputs' values
+  syncRangeToNumber();
+});
+
+    function handleCheckboxChange(checkbox) {
+        const { name, value, checked } = checkbox;
+
+        switch (name) {
+            case 'series':
+                if (checked) {
+                    selectedSeries.push(value);
+                } else {
+                    selectedSeries = selectedSeries.filter(item => item !== value);
+                }
+                break;
+            case 'child_series':
+                if (checked) {
+                    selectedChildSeries.push(value);
+                } else {
+                    selectedChildSeries = selectedChildSeries.filter(item => item !== value);
+                }
+                break;
+            case 'categories':
+                if (checked) {
+                    selectedCategories.push(value);
+                } else {
+                    selectedCategories = selectedCategories.filter(item => item !== value);
+                }
+                break;
+            case 'usage':
+                if (checked) {
+                    selectedUsage.push(value);
+                } else {
+                    selectedUsage = selectedUsage.filter(item => item !== value);
+                }
+                break;
+            case 'processor':
+                if (checked) {
+                    selectedProcessor.push(value);
+                } else {
+                    selectedProcessor = selectedProcessor.filter(item => item !== value);
+                }
+                break;
+            case 'ram':
+                if (checked) {
+                    selectedRAM.push(value);
+                } else {
+                    selectedRAM = selectedRAM.filter(item => item !== value);
+                }
+                break;
+            case 'os':
+                if (checked) {
+                    selectedOS.push(value);
+                } else {
+                    selectedOS = selectedOS.filter(item => item !== value);
+                }
+                break;
+            case 'storage':
+                if (checked) {
+                    selectedStorage.push(value);
+                } else {
+                    selectedStorage = selectedStorage.filter(item => item !== value);
+                }
+                break;
+            case 'graphic':
+                if (checked) {
+                    selectedGraphic.push(value);
+                } else {
+                    selectedGraphic = selectedGraphic.filter(item => item !== value);
+                }
+                break;
+            case 'screen':
+                if (checked) {
+                    selectedScreen.push(value);
+                } else {
+                    selectedScreen = selectedScreen.filter(item => item !== value);
+                }
+                break;
+            case 'display':
+                if (checked) {
+                    selectedDisplay.push(value);
+                } else {
+                    selectedDisplay = selectedDisplay.filter(item => item !== value);
+                }
+                break;
+            case 'touch_screen':
+                if (checked) {
+                    selectedTouchScreen.push(value);
+                } else {
+                    selectedTouchScreen = selectedTouchScreen.filter(item => item !== value);
+                }
+                break;
+            default:
+                break;
+        }
+        applyFilters();
+
+    }
+
+
+    function applyFilters() {
+        const filters = {
+            series: selectedSeries,
+            child_series: selectedChildSeries,
+            categories: selectedCategories,
+            usage: selectedUsage,
+            processor: selectedProcessor,
+            ram: selectedRAM,
+            operating_system: selectedOS,
+            storage: selectedStorage,
+            graphic: selectedGraphic,
+            screen_size: selectedScreen,
+            display_type: selectedDisplay,
+            touch_screen: selectedTouchScreen,
+            price_range: priceRange,
+            price_from:priceFrom,
+            price_to:priceTo,
+            sort_by: sortBy,
+            discount_upto: selectedDiscount,
+        };
+        
+        // Example of how to send the payload to the backend
+        fetch(`${baseUrl}/products?is_rog=1`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(filters),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const filteredData = data.data;
+                    const resultLength = filteredData.length;
+
+                    document.querySelector('.result').innerHTML = `${resultLength} Results`;
+
+                    // Clear previous content
+                    const container = document.getElementById("product-cards-container");
+                    container.innerHTML = '';
+
+                    // Render product cards
+                    filteredData.forEach(product => {
+                        if (screenWidth > 820) {
+                            desktopProductCard(product, container, false, true, true);
+                        } else {
+                            mobileProductCard(product, container, false, true, true);
+                        }
+                    });
+
+                    callSwiperCode();
+                // Handle the filtered data as needed
+            })
+            .catch(error => {
+                console.error('Error applying filters:', error);
+            });
+    }
+
+    function handleToggle(index) {
+        var content = $('.content').eq(index);
+        var toggle = $('.toggle').eq(index);        
+        if (content.css('maxHeight') !== 'none' && content.css('maxHeight') !== '0px') {            
+            content.css('maxHeight', 0);
+            content.css('height', 0);
+            toggle.children().eq(1).find('i')?.removeClass('fa-minus');
+            toggle.children().eq(1).find('i')?.addClass('fa-plus');
+        } else {
+            content.css('maxHeight', content[0].scrollHeight + 'px');
+            content.css('height', content[0].scrollHeight + 'px');
+            toggle.children().eq(1).find('i')?.removeClass('fa-plus');
+            toggle.children().eq(1).find('i')?.addClass('fa-minus');
+        }
+    }
+
+
+    // Create a new Resize Observer
+    const resizeObserver = new ResizeObserver(entries => {
+        handleViewportResize(entries);
+    });
+
+    // Observe the image element
+    resizeObserver.observe(document.getElementById('main-body'));
+
+    // swiper code
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1, // Show one slide at a time
+        
+        spaceBetween: 0, // No space between slides
+        loop: true, // Enable loop mode
+        autoplay: {
+            delay: 3000, // Autoplay delay in milliseconds
+            disableOnInteraction: false, // Keep autoplay running even when user interacts with the slider
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+
+    function handleSortClick() {
+        let sortContainer = document.querySelector('.sort-by-mobile-container');
+        let downArrow = document.querySelector('.down-arrow');
+        if (sortContainer.style.display === 'none') {
+            sortContainer.style.display = 'block';
+            downArrow.style.transform = 'rotate(180deg)';
+            downArrow.style.paddingRight = '10px';
+            downArrow.style.paddingLeft = '0px';
+        } else {
+            sortContainer.style.display = 'none';
+            downArrow.style.transform = 'rotate(0deg)';
+            downArrow.style.paddingRight = '0px';
+            downArrow.style.paddingLeft = '10px';
+        }
+    }
+
+    function handleFilterClick() {
+      let sortContainer = document.querySelector(".filter-by-mobile-container");
+      let downArrow = document.querySelector(".down-filter-arrow");
+      if (sortContainer.style.display === "none") {
+        sortContainer.style.display = "block";
+        downArrow.style.transform = "rotate(180deg)";
+        downArrow.style.paddingRight = "10px";
+        downArrow.style.paddingLeft = "0px";
+      } else {
+        sortContainer.style.display = "none";
+        downArrow.style.transform = "rotate(0deg)";
+        downArrow.style.paddingRight = "0px";
+        downArrow.style.paddingLeft = "10px";
+      }
+      
+      // Initial fetch to load data
+      fetchFilterOptions();
+    }
+    function handleSortSelection(data) {
+        let sortList = document.querySelectorAll('.sort-title');
+        sortList.forEach(list => {
+            if (list === data) {
+                list.children[0].children[0].style.display = 'block';
+                list.classList.add('active-sort');
+            } else {
+                list.classList.remove('active-sort');
+                list.children[0].children[0].style.display = 'none';
+            }
+        });
+            
+        sortBy = $(data).data('value');
+        applyFilters();
+    }
+
+</script>
+
+</html>

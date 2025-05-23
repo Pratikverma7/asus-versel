@@ -1,0 +1,43 @@
+<div class="elevate-banner-container d-none" id="elevate-banner-container">
+    <div class="elevate-banner-left-side-container">
+        <p id="elevate-text"></p>
+        <a class="btn" id="elevate-cta-text"></a>
+    </div>
+    <img id="elevate-banner" src="" alt="laptop-banner" class="w-100">
+</div>
+<script>
+    fetch(`${baseUrl}/banners?banner_type=rog_elevate_banner`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let bannerContainer = document.getElementById('elevate-banner-container');
+            if(data.data.length > 0)
+            {
+                bannerContainer.classList.remove('d-none');
+                let bannerImage = document.getElementById('elevate-banner');
+                let text = document.getElementById('elevate-text');
+                let ctaText = document.getElementById('elevate-cta-text');
+                data.data.forEach((banner, index) => {     
+                    if(text && banner.text)
+                    {
+                        text.innerHTML = banner.text;
+                    }
+    
+                    if(ctaText && banner.cta_text){
+                        ctaText.innerHTML = banner.cta_text;
+                        ctaText.href = banner.redirect_url;
+                    }
+    
+                    if (screenWidth > 820) {
+                        bannerImage.src = banner.image_url;
+                    } else {
+                        bannerImage.src = banner.mobile_image_url;
+                    }
+                });
+            }
+        });
+</script>
