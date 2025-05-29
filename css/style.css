@@ -4009,6 +4009,80 @@ div#specs-section {
     padding-top: 0;
 }
 
+@media (min-width: 992px) and (max-width: 1280px) {
+    .glide__slide .leftside-container .text
+    {
+        font-size: 36px;
+    }
+    .glide__slide .leftside-container .text-bold
+   {
+     font-size: 38px;
+        width: 93%;
+        line-height: 45px;
+        margin-top: 10px;
+   } 
+   .glide__slide .bank-discount-container
+   {
+    right: 2%;
+    bottom: 3%;
+    padding: 4px;
+   }
+
+   #trending-laptops-component .banner-product-image {
+        background-size: 135% 90%;
+    }
+    #trending-laptops-component .hot-deals-product-image
+    { 
+      width: 44%;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+    #trending-laptops-component .product-card-2
+    {
+      display: inline-block;
+    }
+    #trending-laptops-component .trends-content-container, #trending-laptops-component .trends-image-container{
+        width: 100%;
+        position: relative;
+    }
+    #trending-laptops-component .product-offer-text-trending
+    {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+
+    #hot-deals-container.split-container
+    {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    #hot-deals-container .split-3 {
+        grid-column: span 2;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+    #hot-deals-container .split-3 .product-card-2
+    {
+       width: 50%; 
+    }
+
+    #hot-deals-container .split-1 img 
+    {
+        margin-top: 28px;
+    }
+    #hot-deals-container .hot-deals-product-image {
+        left: -12%;
+        top: 30px;
+    }
+    .elevate-banner-left-side-container p
+    {
+        font-size: 37px;
+    }
+  
+}
 
 @media (min-width:768px) and (max-width:1350px)
 {
@@ -4082,7 +4156,7 @@ div#specs-section {
         width: 80%;
     }
     label.compare-text {
-        font-size: 13px;
+        font-size: 12.5px;
     }
     .product-offer-text
     {
