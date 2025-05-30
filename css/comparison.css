@@ -455,7 +455,7 @@ input:checked+label:before {
     {
         font-size: 15px;
         padding: 18px 10px;
-        padding-right: 25px;
+        padding-right: 30px;
     }
    .compare-model-container
     {
@@ -536,7 +536,7 @@ input:checked+label:before {
     }
 
     .compare-buy-now{
-        padding: 11px 30px;
+        padding: 4px 25px;
         width: auto;
         font-size: 12px;
     }
@@ -630,9 +630,12 @@ input:checked+label:before {
     z-index: 1000;
 }
 
+@media (min-width:992px)
+{
 .swiper-wrapper
 {
     justify-content: center;
+}
 }
 
 @media (min-width:768px) and (max-width:900px)

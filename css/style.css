@@ -352,6 +352,9 @@ html {
     height: max-content;
     height: 100%;
     background-color: var(--white-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 #top-deals-1 .product-card, #top-deals-1 .swiper-slide .swiper-slide
 {
@@ -4061,7 +4064,8 @@ div#specs-section {
 
     #hot-deals-container .split-1 img 
     {
-        margin-top: 28px;
+        margin-top: 30px;
+        margin-bottom: -45px;
     }
     #hot-deals-container .hot-deals-product-image, #trending-deals-container .hot-deals-product-image {
         left: -12%;
@@ -4086,6 +4090,19 @@ div#specs-section {
     }
     header .buy-now-search {
        padding: 6px 25px
+    }
+
+    header .compare-wrapper img {
+        height: 18px;
+        width: auto;
+    }
+    #shop-deals-container label.compare-text
+    {
+        margin-left: 4px;
+    }
+    #trending-laptops-component .banner-product-image
+   {
+        background-size: cover;
     }
   
 }
