@@ -4104,6 +4104,10 @@ div#specs-section {
    {
         background-size: cover;
     }
+    #footer .inquiry-title
+    {
+        font-size: 14px;
+    }
   
 }
 
@@ -4115,7 +4119,16 @@ div#specs-section {
     }
 }
 
-
+@media (min-width: 1290px) and (max-width: 1441px) 
+{
+   .comparison-models-container .compare-buy-now
+    {
+        padding-top: 6px;
+    padding-bottom: 6px;
+    width: 80%;
+        font-size: 16px;
+    }
+}
 
 @media (min-width: 1280px) and (max-width: 1400px) {
     .listing-container .product-cards-container
@@ -4132,6 +4145,7 @@ div#specs-section {
     {
         padding: 12px;
     }
+   
     
 }
 @media screen and (max-width: 1440px) {
