@@ -410,6 +410,65 @@ input:checked+label:before {
 {
     outline: unset;
 }
+
+#popular-comparisons-component {
+    margin-top: -45px;
+}
+
+@media (min-width: 992px) and (max-width: 1280px)
+{
+    .model-selection-container .product-compare-visual .compare-price-wrapper, .model-selection-container .product-compare-visual .compare-product-image 
+    {
+      width: 50%;
+    }
+    .model-selection-container .compare-price-wrapper .compare-buy-now
+    {
+        font-size: 12px;
+        line-height: 10px;
+        padding-top: 9px;
+       padding-bottom: 9px;
+    }
+    .model-selection-container .compare-price-container span
+    {
+      display: inline-block;
+        line-height: 16px;
+    }
+    .comparison-product-detail .product-compare-visual .compare-price-wrapper
+    {
+      padding-left: 0;
+    }
+    .comparison-product-detail .compare-price-container .offer-price {
+        font-size: 16px;
+    }
+    .comparison-product-detail .compare-detail-list {
+    padding: 10px;
+   }
+   .comparison-product-detail .compare-list-text
+   {
+    font-size: 14px;
+    padding-top: 4px;
+   }
+    #homepage-slider .glide__slide .leftside-container .text-bold
+    {
+        font-size: 28px;
+       line-height: 45px;
+    }
+    #compare-model-container .model-selection-container select
+    {
+        font-size: 15px;
+        padding: 18px 10px;
+    }
+   .compare-model-container
+    {
+        top: -70px;
+    }
+    #popular-comparisons-component {
+        margin-top: -35px;
+    }
+    .switch-field {
+    display: flex;
+   }
+}
 @media screen and (max-width:820px) {
     .comparison-product-detail{
         width: 270px;

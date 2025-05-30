@@ -4081,6 +4081,19 @@ div#specs-section {
     {
         font-size: 37px;
     }
+    
+    header .temp-section
+    {
+        display: none;
+    }
+    header .links-container, header .compare-navbar-container
+    {
+        display: flex;
+    }
+    header .compare-wrapper .compare-text
+    {
+        width: 120px;
+    }
   
 }
 
