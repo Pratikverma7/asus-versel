@@ -340,6 +340,13 @@ body .exclusive-banner-left-side-container p, body ul#countdown, body ul#countdo
   color: pink;
 }
 
+@media (min-width: 992px) and (max-width: 1280px)
+{
+  .useful-tips-container .video-container {
+    height: 180px;
+}
+}
+
 @media screen and (max-width:767px) {
   body .search-input-wrapper {
     padding: 13px;

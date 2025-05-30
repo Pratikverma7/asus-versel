@@ -353,6 +353,16 @@ html {
     height: 100%;
     background-color: var(--white-color);
 }
+#top-deals-1 .product-card, #top-deals-1 .swiper-slide .swiper-slide
+{
+   border: unset; 
+}
+
+#top-deals-1 .swiper-slide
+{
+    border: 1px solid #d9d9d6;
+}
+
 
 .rog .product-card {
     border-radius: 20px;
@@ -4010,6 +4020,9 @@ div#specs-section {
 }
 
 @media (min-width: 992px) and (max-width: 1280px) {
+    .hot-deals-banner-product-image {
+        height: unset;
+    }
     .glide__slide .leftside-container .text
     {
         font-size: 36px;
@@ -4028,43 +4041,20 @@ div#specs-section {
     padding: 4px;
    }
 
-   #trending-laptops-component .banner-product-image {
-        background-size: 135% 90%;
-    }
-    #trending-laptops-component .hot-deals-product-image
-    { 
-      width: 44%;
-        left: 0;
-        right: 0;
-        margin: auto;
-    }
-    #trending-laptops-component .product-card-2
-    {
-      display: inline-block;
-    }
-    #trending-laptops-component .trends-content-container, #trending-laptops-component .trends-image-container{
-        width: 100%;
-        position: relative;
-    }
-    #trending-laptops-component .product-offer-text-trending
-    {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-    }
+  
 
-    #hot-deals-container.split-container
+    #hot-deals-container.split-container, #trending-deals-container.split-container
     {
         grid-template-columns: repeat(2, 1fr);
     }
-    #hot-deals-container .split-3 {
+    #hot-deals-container .split-3, #trending-deals-container .split-3 {
         grid-column: span 2;
         display: flex;
         width: 100%;
         justify-content: space-between;
         flex-wrap: nowrap;
     }
-    #hot-deals-container .split-3 .product-card-2
+    #hot-deals-container .split-3 .product-card-2, #trending-deals-container .split-3 .product-card-2
     {
        width: 50%; 
     }
@@ -4073,7 +4063,7 @@ div#specs-section {
     {
         margin-top: 28px;
     }
-    #hot-deals-container .hot-deals-product-image {
+    #hot-deals-container .hot-deals-product-image, #trending-deals-container .hot-deals-product-image {
         left: -12%;
         top: 30px;
     }
@@ -4093,6 +4083,9 @@ div#specs-section {
     header .compare-wrapper .compare-text
     {
         width: 120px;
+    }
+    header .buy-now-search {
+       padding: 6px 25px
     }
   
 }
