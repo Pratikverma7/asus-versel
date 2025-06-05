@@ -392,6 +392,26 @@ html {
     /* margin-top: -26px; */
 
 }
+#hot-deal-component .product-title
+{
+    -webkit-line-clamp: 2;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    height: 45px;
+}
+#hot-deal-component .product-description
+{
+    -webkit-line-clamp: 2;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    height: 42px;
+}
 
 .rog .product-title {
     font-family: var(--rog-secondary-text);
@@ -4122,7 +4142,16 @@ div#specs-section {
         grid-template-columns: repeat(4, 1fr);
     }
 }
-
+@media (min-width: 1281px) and (max-width: 1289px) 
+{
+  .product-card-2 .offer-price {
+    font-size: 18px;
+ }
+ .glide__slide .leftside-container .text-bold
+ {
+    font-size: 55px;
+ }
+}
 @media (min-width: 1290px) and (max-width: 1441px) 
 {
    .comparison-models-container .compare-buy-now
@@ -4457,6 +4486,11 @@ div#specs-section {
     #category-dropdown .select:hover img
     {
       filter: brightness(0) invert(1);
+    }
+    #hot-deal-component .product-title
+    {
+        height: 55px;
+       margin-bottom: 4px;
     }
 }
 /* End Top Category */
