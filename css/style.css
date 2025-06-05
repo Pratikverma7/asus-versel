@@ -489,6 +489,7 @@ html {
     background-color: var(--primary-background);
     padding: 12px;
     margin-bottom: 15px;
+    text-align: left;
 }
 
 .rog .offer-options {
