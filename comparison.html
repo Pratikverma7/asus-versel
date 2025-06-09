@@ -43,13 +43,13 @@
                 </div>
                 <div class="model-selection-wrapper" id="model-selection-wrapper">
                     <div class="model-selection-container">
-                        <select name="model" id="model1">
+                        <select class="select-group" onchange="updateOptions()" name="model" id="model1">
                             <option value="">Select Model</option>
-                        </select><select name="model" id="model2">
+                        </select><select class="select-group" onchange="updateOptions()" name="model" id="model2">
                             <option value="">Select Model</option>
-                        </select><select name="model" id="model3">
+                        </select><select class="select-group" onchange="updateOptions()" name="model" id="model3">
                             <option value="">Select Model</option>
-                        </select><select name="model" id="model4">
+                        </select><select class="select-group" onchange="updateOptions()" name="model" id="model4">
                             <option value="">Select Model</option>
                         </select>
                     </div>
@@ -365,6 +365,26 @@
     function buyNow(url) {
         window.location.href = url;
     }
+</script>
+<script>
+function updateOptions() {
+    const selects = document.querySelectorAll('.select-group');
+    const selectedValues = new Set();
+ 
+    selects.forEach(select => {
+        if (select.value) {
+            selectedValues.add(select.value);
+        }
+    });
+ 
+    selects.forEach(select => {
+        const currentValue = select.value;
+        Array.from(select.options).forEach(option => {
+            if (option.value === "") return;
+            option.disabled = selectedValues.has(option.value) && option.value !== currentValue;
+        });
+    });
+}
 </script>
 
 </html>
