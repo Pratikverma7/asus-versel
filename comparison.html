@@ -268,76 +268,88 @@
 
     // Function to handle selection change and update product details
     function handleSelectionChange() {
-        const selects = document.querySelectorAll('select[name="model"]');
-   
-        selects.forEach((select, index) => {
-            select.addEventListener('change', () => {
-                const productId = select.value;
+    const selects = document.querySelectorAll('select[name="model"]');
+
+    selects.forEach((select, index) => {
+        select.addEventListener('change', () => {
+            const productId = select.value;
+            const detailDiv = document.getElementById(`detail${index + 1}`);
+
+            // If no model selected, reset styles and content
+            if (!productId) {
                 select.style.border = 'none';
-                const selectedProduct = products.find(product => product.id == productId);
-                const compareDiv = document.getElementById('compare-model-container');
-                if (compareDiv) {
-                    // Scroll to the element first
-                    compareDiv.scrollIntoView({ behavior: 'smooth' });
-                }
-                const detailDiv = document.getElementById(`detail${index + 1}`);
-                // detailDiv.textContent = selectedName ? selectedName : `model${index + 1}`;
-                detailDiv.style.height = '300px';
-                detailDiv.style.overflow = 'scroll';
+                detailDiv.removeAttribute('style');
+                detailDiv.innerHTML = '';
+                return; // Exit early
+            }
 
-                detailDiv.innerHTML = `
-                    <div class="product-compare-visual">
-                        <div class="compare-product-image">
-                            <img src="${selectedProduct.product_images[0]}" alt="product-image">
-                        </div>
-                        <div class="compare-price-wrapper">
-                            <div class="compare-price-container"><span class="offer-price">${formatPriceInINR(selectedProduct.product_discounted_price)}*</span><span class="real-price">${formatPriceInINR(selectedProduct.product_main_price)}</span></div>
-                            <button class="compare-buy-now" onclick="buyNow('${selectedProduct.buy_now_url}')">Buy Now</button>
-                        </div>
+            select.style.border = 'none';
+            const selectedProduct = products.find(product => product.id == productId);
+            const compareDiv = document.getElementById('compare-model-container');
+            if (compareDiv) {
+                compareDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            detailDiv.style.height = '300px';
+            detailDiv.style.overflow = 'scroll';
+
+            detailDiv.innerHTML = `
+                <div class="product-compare-visual">
+                    <div class="compare-product-image">
+                        <img src="${selectedProduct.product_images[0]}" alt="product-image">
                     </div>
-                    <div>
-                        <ul class="compare-detail-list-container">
-                            <li class="compare-detail-list">
-                                <div class="compare-list-title">Series</div>
-                                <div class="compare-list-text">${selectedProduct.series_name}</div>
-                            </li>    
-                            <li class="compare-detail-list">
-                                <div class="compare-list-title">Usage</div>
-                                <div class="compare-list-text">
-                                    ${selectedProduct.usages?.map((usage) =>
-                                        `<div>${usage?.name}</div>`
-                                    ).join(' ')}
-                                </div>
-                            </li>    
-                            <li class="compare-detail-list">
-                                <div class="compare-list-title">Processor</div>
-                                <div class="compare-list-text">${selectedProduct.processor_name}</div>
-                            </li>    
-                            <li class="compare-detail-list">
-                                <div class="compare-list-title">Graphics</div>
-                                <div class="compare-list-text">${selectedProduct.graphics_name}</div>
-                            </li>    
-                            <li class="compare-detail-list">
-                                <div class="compare-list-title">Screen Size</div>
-                                <div class="compare-list-text">${selectedProduct.screen_sizes_size}</div>
-                            </li>    
-                            <li class="compare-detail-list">
-                                <div class="compare-list-title">Display Type</div>
-                                <div class="compare-list-text">${selectedProduct.displays_type}</div>
-                            </li>    
-                            <li class="compare-detail-list">
-                                <div class="compare-list-title">Discount & Offers</div>
-                                <div class="compare-list-text">${selectedProduct.product_offers?.map((offer) =>
-                    `<div>${offer}</div>`
-                ).join(' ')}</div>
-                            </li>    
-                        </ul>
+                    <div class="compare-price-wrapper">
+                        <div class="compare-price-container">
+                            <span class="offer-price">${formatPriceInINR(selectedProduct.product_discounted_price)}*</span>
+                            <span class="real-price">${formatPriceInINR(selectedProduct.product_main_price)}</span>
+                        </div>
+                        <button class="compare-buy-now" onclick="buyNow('${selectedProduct.buy_now_url}')">Buy Now</button>
                     </div>
-                    `;
-            });
+                </div>
+                <div>
+                    <ul class="compare-detail-list-container">
+                        <li class="compare-detail-list">
+                            <div class="compare-list-title">Series</div>
+                            <div class="compare-list-text">${selectedProduct.series_name}</div>
+                        </li>
+                        <li class="compare-detail-list">
+                            <div class="compare-list-title">Usage</div>
+                            <div class="compare-list-text">
+                                ${selectedProduct.usages?.map((usage) => `<div>${usage?.name}</div>`).join(' ')}
+                            </div>
+                        </li>
+                        <li class="compare-detail-list">
+                            <div class="compare-list-title">Processor</div>
+                            <div class="compare-list-text">${selectedProduct.processor_name}</div>
+                        </li>
+                        <li class="compare-detail-list">
+                            <div class="compare-list-title">Graphics</div>
+                            <div class="compare-list-text">${selectedProduct.graphics_name}</div>
+                        </li>
+                        <li class="compare-detail-list">
+                            <div class="compare-list-title">Screen Size</div>
+                            <div class="compare-list-text">${selectedProduct.screen_sizes_size}</div>
+                        </li>
+                        <li class="compare-detail-list">
+                            <div class="compare-list-title">Display Type</div>
+                            <div class="compare-list-text">${selectedProduct.displays_type}</div>
+                        </li>
+                        <li class="compare-detail-list">
+                            <div class="compare-list-title">Discount & Offers</div>
+                            <div class="compare-list-text">
+                                ${selectedProduct.product_offers?.map((offer) => `<div>${offer}</div>`).join(' ')}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            `;
         });
-    }
+    });
+}
 
+   
+    
+    
     function getComparisonProducts() {
         const urlString = window.location.href;
 
@@ -370,39 +382,40 @@ function updateOptions() {
     const selects = document.querySelectorAll('.select-group');
     const selectedValues = new Set();
 
-    
     selects.forEach(select => {
         if (select.value) {
             selectedValues.add(select.value);
         }
     });
 
-    
     if (!window.originalOptions) {
         window.originalOptions = [];
         selects.forEach(select => {
             const options = Array.from(select.options)
-                .filter(opt => opt.value !== "") 
+                .filter(opt => opt.value !== "")
                 .map(opt => ({ value: opt.value, text: opt.text }));
             window.originalOptions.push(options);
         });
     }
 
-    
     selects.forEach((select, index) => {
         const currentValue = select.value;
         const options = window.originalOptions[index];
 
-        
+        // Reset the corresponding detail section if no model is selected
+        const detailDiv = document.getElementById(`detail${index + 1}`);
+        if (!currentValue) {
+            detailDiv.removeAttribute('style'); // ✅ Remove all inline styles
+            detailDiv.innerHTML = ''; // (optional) clear contents if needed
+        }
+
         select.innerHTML = '';
 
-        
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
         defaultOption.textContent = 'Select Model';
         select.appendChild(defaultOption);
 
-       
         options.forEach(opt => {
             if (!selectedValues.has(opt.value) || opt.value === currentValue) {
                 const option = document.createElement('option');
@@ -416,6 +429,7 @@ function updateOptions() {
         });
     });
 }
+
 </script>
 
 
