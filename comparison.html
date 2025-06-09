@@ -369,21 +369,54 @@
 function updateOptions() {
     const selects = document.querySelectorAll('.select-group');
     const selectedValues = new Set();
- 
+
+    
     selects.forEach(select => {
         if (select.value) {
             selectedValues.add(select.value);
         }
     });
- 
-    selects.forEach(select => {
+
+    
+    if (!window.originalOptions) {
+        window.originalOptions = [];
+        selects.forEach(select => {
+            const options = Array.from(select.options)
+                .filter(opt => opt.value !== "") 
+                .map(opt => ({ value: opt.value, text: opt.text }));
+            window.originalOptions.push(options);
+        });
+    }
+
+    
+    selects.forEach((select, index) => {
         const currentValue = select.value;
-        Array.from(select.options).forEach(option => {
-            if (option.value === "") return;
-            option.disabled = selectedValues.has(option.value) && option.value !== currentValue;
+        const options = window.originalOptions[index];
+
+        
+        select.innerHTML = '';
+
+        
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select Model';
+        select.appendChild(defaultOption);
+
+       
+        options.forEach(opt => {
+            if (!selectedValues.has(opt.value) || opt.value === currentValue) {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.text;
+                if (opt.value === currentValue) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            }
         });
     });
 }
 </script>
+
 
 </html>
