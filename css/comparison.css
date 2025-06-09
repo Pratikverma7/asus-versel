@@ -380,6 +380,7 @@ input:checked+label:before {
     text-align: left;
     color: #53565A;
     padding-top: 10px;
+    padding-top: 6px;
 }
 
 .model-selection-wrapper{
@@ -411,7 +412,9 @@ input:checked+label:before {
     outline: unset;
 }
 
-
+#popular-comparison-container .trends-content-container {
+        padding-left: 10px!important;
+    }
 
 @media (min-width: 992px) and (max-width: 1280px)
 {
@@ -609,6 +612,26 @@ input:checked+label:before {
         margin-top: 60px;
         /* height:440px */
     }
+    #main-body #popular-comparison-container .total-rating
+    {
+        padding-top: 0px!important;
+    }
+    #popular-comparison-container .trends-content-container {
+        padding-left: 10px!important;
+    }
+
+
+    #comparison-exclusive-component .exclusive-banner-left-side-container p
+    {
+        margin-bottom: 102px;
+    }
+    #comparison-exclusive-component ul#countdown
+    {
+            padding: 13px 0 13px 0;
+    }
+    #comparison-exclusive-component ul#countdown li {
+    font-size: 50px;
+   }
 
 }
 .scrollable-content {
